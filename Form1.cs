@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Media.Media3D;
 
 namespace DesktopFidget
 {
@@ -31,12 +32,12 @@ namespace DesktopFidget
         private const int WS_MINIMIZEBOX = 0x00020000;
   
         //Just setting up variables.
+        object MAINFRAME = DesktopFidget.Properties.Resources.ResourceManager.GetObject("MAINFRAME");
         private bool LeftMouseButtonDown = false;
         private bool ActivateShot = false;
-        private int LowerBodyState1 = 0;
-        private int LowerBodyState2 = 4;
-        private int TailState1 = 0;
-        private int TailState2 = 3;
+        private bool LookingRightWay = true;
+        private int LowerBodyState = 160;
+        private int TailState = 105;
         private int UpperBodyState1 = 0;
         private int UpperBodyState2 = 0;
         private int UpperBodyState3 = 0;
@@ -48,16 +49,29 @@ namespace DesktopFidget
         private int NeedTBS1 = 0;
         private int NeedTBS2 = 0;
         private int NeedTBS3 = 0;
+        private int TurnAroundState = 0;
         private Image LeftWingImage;
         private Image RightWingImage;
-        private Image TopBodyImage;
+        private Image UpperBodyImage;
         private Image LowerBodyImage;
         private Image TailImage;
+        private Image[] CutFrame = new Image[240];
 
         public Form1()
         {
             InitializeComponent();
             this.DoubleBuffered = true; //Removing flickering.
+            //Cut out frames
+            for (int _b=0; _b<6; _b++)
+            {
+                if (_b != 1)
+                {
+                    for (int _a = 0; _a < 40; _a++)
+                    {
+                      CutFrame[_a + (_b * 40)] = SliceMainFrame(_a, _b);
+                    }
+                }
+            }
             //Starting loop threads responsible for changing images for each part
             //of the body.
             Thread threadlbil = new Thread(new ThreadStart(LowerBodyImageLoop));
@@ -79,18 +93,31 @@ namespace DesktopFidget
             DrawMenuBar(window);
         }
 
-        private Bitmap SliceMainFrame(int _x, int _y, int _size)
+        private Bitmap SliceMainFrame(int _a, int _b)
         {
-            //This is the part where the program kills the cpu.
-            //Threads request the main image to be cut in pieces each few mseconds
-            //through this function. You might wanna take a look at the image
-            //if you haven't yet.
-            object MAINFRAME = DesktopFidget.Properties.Resources.ResourceManager.GetObject("MAINFRAME");
-            Bitmap MAINFRAMEb = (Bitmap)MAINFRAME;
-            Rectangle cloneRect = new Rectangle(_x*64, _y*64, 64, _size);
-            System.Drawing.Imaging.PixelFormat format = MAINFRAMEb.PixelFormat;
-            Bitmap result = MAINFRAMEb.Clone(cloneRect, format);
-            return result;
+            //0 - 7 (64x128) - LEFT WING
+            //8 - 15 (64x128) - RIGHT WING
+            //16 - 18 - LOOK UPWARDS
+            //19 - 21 - LOOK BACKWARDS
+            //22 - 25 - BEFORE/AFTER LOOK UPWARDS
+            //26 - 31 - USE MAGIC
+            //32 - EMPTY
+            //33 - 39 (64x128) - TURN AROUND
+            //40 - 79 - EMPTY
+            //80 - 158 - TAIL ANIMATION
+            //160 - 238 - LOWER BODY ANIMATION 
+            //159 AND 239 - EMPTY
+            Bitmap _MAINFRAMEb = (Bitmap)MAINFRAME;
+            int _size=64;
+            if ((_a < 16 && _b == 0) || (_a > 32 && _b == 0)) { _size = 128; }
+            Rectangle _cloneRect = new Rectangle(_a*64, _b*64, 64, _size);
+            System.Drawing.Imaging.PixelFormat format = _MAINFRAMEb.PixelFormat;
+            Bitmap _result = _MAINFRAMEb.Clone(_cloneRect, format);
+            //Image _i = (Image)_result;
+            //Graphics _g = Graphics.FromImage(_i);
+            //_result = new Bitmap(63, 63, _g);
+            //_g.Dispose();
+            return _result;
         }
 
         private void RefreshTheForm()
@@ -100,10 +127,13 @@ namespace DesktopFidget
             //This part causes the program to throw an exception
             //when it's being closed because it will still try to invoke.
             //My attempts at fixing this have been useless so far.
+            if (this.IsHandleCreated)
+            {
                 this.Invoke((MethodInvoker)delegate
                 {
                     this.Refresh();
                 });
+            }
         }
 
         private void WingsImageLoop()
@@ -111,11 +141,11 @@ namespace DesktopFidget
             while (true)
             {
                 //Cut out the part we need each time the loop is run.
-                LeftWingImage = SliceMainFrame(LeftWingState, 0, 128);
-                RightWingImage = SliceMainFrame(RightWingState, 0, 128);
+                LeftWingImage = CutFrame[LeftWingState];
+                RightWingImage = CutFrame[RightWingState];
                 //Refresh the form for the change to appear.
                 RefreshTheForm();
-                Thread.Sleep(20);
+                Thread.Sleep(45);
                 LeftWingState++;
                 RightWingState++;
                 if (LeftWingState == 8) { LeftWingState = 0; }
@@ -139,30 +169,43 @@ namespace DesktopFidget
                     //Go through the frames we need using for loop.
                     for (int _a = 25; _a < 31; _a++)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(50);
                     }
                     //Return back to normal.
-                    TopBodyImage = SliceMainFrame(16, 0, 64);
+                    UpperBodyImage = CutFrame[16];
                     ActivateShot = false;
                 }
-
+                //Check for turn around state
+                if (TurnAroundState == 2)
+                {
+                    //while (TailState != 104 || TailState != 105) { }
+                    LowerBodyImage = CutFrame[32];
+                    for (int _a = 33; _a < 40; _a++)
+                    {
+                        UpperBodyImage = CutFrame[_a];
+                        RefreshTheForm();
+                        Thread.Sleep(80);
+                    }
+                    TurnAroundState = 0;
+                    LookingRightWay = !LookingRightWay;
+                }
                 //Looking upwards animation.
                 if (UpperBodyState1 == NeedTBS1 )
                 {
                     for (int _a = 25; _a > 21; _a--)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(80);
                     }
-                    TopBodyImage = SliceMainFrame(16, 0, 64);
+                    UpperBodyImage = CutFrame[16];
                     //Wait some time in this state before going back to normal.
                     Thread.Sleep(Convert.ToInt32(rnd.Next(700, 1000)));
                     for (int _a = 23; _a < 25; _a++)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(100);
                     }
@@ -175,20 +218,20 @@ namespace DesktopFidget
                 {
                     for (int _a = 25; _a > 21; _a--)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(100);
                     }
                     for (int _a = 16; _a < 22; _a++)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(rnd.Next(500, 800))); }
                         else { Thread.Sleep(100); }
                     }
                     for (int _a = 21; _a > 16; _a--)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                        Thread.Sleep(100);
                     }
@@ -201,15 +244,15 @@ namespace DesktopFidget
                 {
                     for (int _a = 18; _a < 21; _a++)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(80);
                     }
-                    TopBodyImage = SliceMainFrame(21, 0, 64);
+                    UpperBodyImage = CutFrame[21];
                     Thread.Sleep(Convert.ToInt32(rnd.Next(700, 1000)));
                     for (int _a = 21; _a > 17; _a--)
                     {
-                        TopBodyImage = SliceMainFrame(_a, 0, 64);
+                        UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
                         Thread.Sleep(100);
                     }
@@ -219,7 +262,7 @@ namespace DesktopFidget
 
                 //At the end of the day if nothing is happening
                 //put the normal frame on and wait a second.
-                TopBodyImage = SliceMainFrame(31, 0, 64);
+                UpperBodyImage = CutFrame[31];
                 UpperBodyState1++;
                 UpperBodyState2++;
                 UpperBodyState3++;
@@ -233,34 +276,31 @@ namespace DesktopFidget
             {
                 //Same idea here as in upper body loop but with less random
                 //and more looping through the same stuff over and over.
-                LowerBodyImage = SliceMainFrame(LowerBodyState1, LowerBodyState2, 64);
-                LowerBodyState1++;
-                if (LowerBodyState1 == 40 && LowerBodyState2 == 4)
+                if (TurnAroundState == 0)
                 {
-                    LowerBodyState1 = 0;
-                    LowerBodyState2 = 5;
+                    LowerBodyImage = CutFrame[LowerBodyState];
+                    LowerBodyState++;
+                    if (LowerBodyState == 239)
+                    {
+                        LowerBodyState = 160;
+                    }
                 }
-                if (LowerBodyState1 == 39 && LowerBodyState2 == 5)
+                else
                 {
-                    LowerBodyState1 = 0;
-                    LowerBodyState2 = 4;
+                    if (TurnAroundState != 2)
+                    {
+                        TurnAroundState++;
+                    }
                 }
-                RefreshTheForm();
 
-                TailImage = SliceMainFrame(TailState1, TailState2, 64);
-                TailState1++;
-                if (TailState1 == 40 && TailState2 == 2)
+                TailImage = CutFrame[TailState];
+                TailState++;
+                if (TailState == 159)
                 {
-                    TailState1 = 0;
-                    TailState2 = 3;
-                }
-                if (TailState1 == 39 && TailState2 == 3)
-                {
-                    TailState1 = 0;
-                    TailState2 = 2;
+                    TailState = 80;
                 }
                 RefreshTheForm();
-                Thread.Sleep(40);
+                Thread.Sleep(90);
             }
         }
 
@@ -284,7 +324,7 @@ namespace DesktopFidget
                 if (_angleheight == 1) { _angleheight = 0; }
                 if (_angleheightub == 1) { _angleheightub = 0; }
                 if (_anglewidth == 1) { _anglewidth = 0; }
-                Thread.Sleep(20);
+                Thread.Sleep(25);
             }
         }
 
@@ -293,28 +333,50 @@ namespace DesktopFidget
                 //Check if the image actually exists,
                 //then draw the image using magical numbers and taking
                 //numbers responsible for flying into account.
-                if (RightWingImage != null) 
-                {e.Graphics.DrawImage(RightWingImage, new Point(110+WidthBonus, 17 + HeightBonus + HeightBonusUpperBody)); }
+
+            if (!LookingRightWay)
+            {
+                e.Graphics.TranslateTransform(232, 0);
+                e.Graphics.ScaleTransform(-1F, 1);
+            }
+
+                 if (TailImage != null)
+                 {
+                     Point[] _destinationPoints = {
+                    new Point(79 + WidthBonus, 78 + HeightBonus),   // destination for upper-left point of  
+                                          // original 
+                    new Point(144 + WidthBonus, 78 + HeightBonus),  // destination for upper-right point of  
+                                          // original 
+                    new Point(63 + WidthBonus, 138 + HeightBonus)};
+                     e.Graphics.DrawImage(TailImage, _destinationPoints); 
+                 }  
                 
-                if (TailImage != null) 
-                {e.Graphics.DrawImage(TailImage, new Point(79 + WidthBonus, 74 + HeightBonus));}
-                
+                if (RightWingImage != null)
+                { e.Graphics.DrawImage(RightWingImage, new Point(110 + WidthBonus, 17 + HeightBonus + HeightBonusUpperBody)); }
+
                 if (LowerBodyImage != null) 
                 {e.Graphics.DrawImage(LowerBodyImage, new Point(79 + WidthBonus, 66 + HeightBonus));}
                 
                 if (LeftWingImage != null) 
                 { e.Graphics.DrawImage(LeftWingImage, new Point(55 + WidthBonus, 17 + HeightBonus + HeightBonusUpperBody)); }
                 
-                if (TopBodyImage != null) 
-                { e.Graphics.DrawImage(TopBodyImage, new Point(75 + WidthBonus, 25 + HeightBonus + HeightBonusUpperBody)); }
+                if (UpperBodyImage != null) 
+                { e.Graphics.DrawImage(UpperBodyImage, new Point(75 + WidthBonus, 25 + HeightBonus + HeightBonusUpperBody)); }
         }
 
         private void MoveButton_MouseDown(object sender, MouseEventArgs e)
         {
-            //When the mouse button goes down start listening to mouse movements.
-            LeftMouseButtonDown = true;
-            Thread threadwil = new Thread(new ThreadStart(MoveWindowFunction));
-            threadwil.Start();
+            if (e.Button == MouseButtons.Right)
+            {
+                TurnAroundState = 1;
+            }
+            else
+            {
+                //When the mouse button goes down start listening to mouse movements.
+                LeftMouseButtonDown = true;
+                Thread threadwil = new Thread(new ThreadStart(MoveWindowFunction));
+                threadwil.Start();
+            }
         }
 
         private void MoveWindowFunction()
