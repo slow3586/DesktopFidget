@@ -75,12 +75,16 @@ namespace DesktopFidget
             //Starting loop threads responsible for changing images for each part
             //of the body.
             Thread threadlbil = new Thread(new ThreadStart(LowerBodyImageLoop));
+            threadlbil.IsBackground = true;
             threadlbil.Start();
             Thread threadtbil = new Thread(new ThreadStart(UpperBodyImageLoop));
+            threadtbil.IsBackground = true;
             threadtbil.Start();
             Thread threadwil = new Thread(new ThreadStart(WingsImageLoop));
+            threadwil.IsBackground = true;
             threadwil.Start();
             Thread threadhcl = new Thread(new ThreadStart(HeightCalcLoop));
+            threadhcl.IsBackground = true;
             threadhcl.Start();
         }
 
@@ -124,9 +128,6 @@ namespace DesktopFidget
         {
             //Quick function to make things more readable. Refresh the
             //form so the changes are visible.
-            //This part causes the program to throw an exception
-            //when it's being closed because it will still try to invoke.
-            //My attempts at fixing this have been useless so far.
             if (this.IsHandleCreated)
             {
                 this.Invoke((MethodInvoker)delegate
