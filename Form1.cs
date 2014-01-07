@@ -347,9 +347,9 @@ namespace DesktopFidget
                  if (TailImage != null)
                  {
                      Point[] _destinationPoints = {
-                    new Point(78 + WidthBonus, 77 + HeightBonus),   // destination for upper-left point of  
+                    new Point(79 + WidthBonus, 77 + HeightBonus),   // destination for upper-left point of  
                                           // original 
-                    new Point(142 + WidthBonus, 77 + HeightBonus),  // destination for upper-right point of  
+                    new Point(143 + WidthBonus, 77 + HeightBonus),  // destination for upper-right point of  
                                           // original 
                     new Point(63 + WidthBonus, 138 + HeightBonus)};
                      e.Graphics.DrawImage(TailImage, _destinationPoints); 
