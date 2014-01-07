@@ -301,7 +301,7 @@ namespace DesktopFidget
                     TailState = 80;
                 }
                 RefreshTheForm();
-                Thread.Sleep(90);
+                Thread.Sleep(65);
             }
         }
 
@@ -334,7 +334,10 @@ namespace DesktopFidget
                 //Check if the image actually exists,
                 //then draw the image using magical numbers and taking
                 //numbers responsible for flying into account.
-
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
             if (!LookingRightWay)
             {
                 e.Graphics.TranslateTransform(232, 0);
@@ -344,9 +347,9 @@ namespace DesktopFidget
                  if (TailImage != null)
                  {
                      Point[] _destinationPoints = {
-                    new Point(79 + WidthBonus, 78 + HeightBonus),   // destination for upper-left point of  
+                    new Point(78 + WidthBonus, 77 + HeightBonus),   // destination for upper-left point of  
                                           // original 
-                    new Point(144 + WidthBonus, 78 + HeightBonus),  // destination for upper-right point of  
+                    new Point(142 + WidthBonus, 77 + HeightBonus),  // destination for upper-right point of  
                                           // original 
                     new Point(63 + WidthBonus, 138 + HeightBonus)};
                      e.Graphics.DrawImage(TailImage, _destinationPoints); 
