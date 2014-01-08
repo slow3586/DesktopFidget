@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows.Media.Media3D;
 
 namespace DesktopFidget
 {
@@ -22,6 +21,8 @@ namespace DesktopFidget
         static extern IntPtr FindWindowByCaption(IntPtr ZeroOnly, string lpWindowName);
         [DllImport("user32.dll")]
         static extern bool DrawMenuBar(IntPtr hWnd);
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
         private readonly string WINDOW_NAME = "Desktop Fidget"; 
@@ -91,10 +92,11 @@ namespace DesktopFidget
         private void Form1_Load(object sender, EventArgs e)
         {
             //When the form loads this removes the window borders.
-            IntPtr window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
-            SetWindowLong(window, GWL_STYLE, WS_SYSMENU);
-            SetWindowPos(window, -3, 45, 45, 500, 400, 0x0040);
-            DrawMenuBar(window);
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+            SetWindowLong(_window, GWL_STYLE, WS_SYSMENU);
+            SetWindowPos(_window, -3, 45, 45, 500, 400, 0x0040);
+            DrawMenuBar(_window);
+
         }
 
         private Bitmap SliceMainFrame(int _a, int _b)
@@ -117,10 +119,6 @@ namespace DesktopFidget
             Rectangle _cloneRect = new Rectangle(_a*64, _b*64, 64, _size);
             System.Drawing.Imaging.PixelFormat format = _MAINFRAMEb.PixelFormat;
             Bitmap _result = _MAINFRAMEb.Clone(_cloneRect, format);
-            //Image _i = (Image)_result;
-            //Graphics _g = Graphics.FromImage(_i);
-            //_result = new Bitmap(63, 63, _g);
-            //_g.Dispose();
             return _result;
         }
 
@@ -141,7 +139,7 @@ namespace DesktopFidget
         {
             while (true)
             {
-                //Cut out the part we need each time the loop is run.
+                //Take the frame we need
                 LeftWingImage = CutFrame[LeftWingState];
                 RightWingImage = CutFrame[RightWingState];
                 //Refresh the form for the change to appear.
@@ -285,6 +283,14 @@ namespace DesktopFidget
                     {
                         LowerBodyState = 160;
                     }
+
+                    TailImage = CutFrame[TailState];
+                    TailState++;
+                    if (TailState == 159)
+                    {
+                        TailState = 80;
+                    }
+                    RefreshTheForm();
                 }
                 else
                 {
@@ -293,14 +299,6 @@ namespace DesktopFidget
                         TurnAroundState++;
                     }
                 }
-
-                TailImage = CutFrame[TailState];
-                TailState++;
-                if (TailState == 159)
-                {
-                    TailState = 80;
-                }
-                RefreshTheForm();
                 Thread.Sleep(65);
             }
         }
@@ -390,13 +388,13 @@ namespace DesktopFidget
             //change the program's position.
             int _xdif = Cursor.Position.X -this.Location.X;
             int _ydif = Cursor.Position.Y -this.Location.Y;
-            IntPtr window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
             while(LeftMouseButtonDown)
             {
                 Thread.Sleep(40);
                 int _newx = Cursor.Position.X;
                 int _newy = Cursor.Position.Y;
-                SetWindowPos(window, 0, _newx-_xdif, _newy-_ydif, 240, 220, 0x0040);
+                SetWindowPos(_window, 0, _newx-_xdif, _newy-_ydif, 240, 220, 0x0040);
             }
         }
 
@@ -411,5 +409,37 @@ namespace DesktopFidget
             //Magic!
             ActivateShot = true;
         }
+
+        private void OpenForm2()
+        {
+            FormCollection fc = Application.OpenForms;
+            int _a=0;
+            foreach (Form frm in fc)
+            {
+                if (frm.Text == "DFidget Settings")
+                {
+                    _a++;
+                }
+            }
+            if(_a==0)
+                Application.Run(new Form2());
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Thread threadform2 = new Thread(new ThreadStart(OpenForm2));
+            threadform2.IsBackground = true;
+            threadform2.Start();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+    }
+
+    public class Variables
+    {
+        public static bool ClickThroughWindow = false;
     }
 }
