@@ -30,6 +30,12 @@ namespace DesktopFidget
         public Form2()
         {
             InitializeComponent();
+            MovingDistanceTB.Value = Variables.MovementDistance;
+           // MovingDistanceLabel.Text = MovingDistanceTB.Value.ToString();
+            MovingFrequencyTB.Value = Variables.MovementFrequency;
+            //MovingFrequencyLabel.Text = MovingFrequencyTB.Value.ToString();
+            AlphaLevelTB.Value = Variables.AlphaLevel;
+            SizeLevelTB.Value = Variables.SizeLevel;
             if (Variables.ClickThroughWindow == true)
             {
                 CheckstateChangedByProgram = true;
@@ -60,6 +66,33 @@ namespace DesktopFidget
         private void Form2_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void MovingDistanceTB_ValueChanged(object sender, EventArgs e)
+        {
+            MovingDistanceLabel.Text = MovingDistanceTB.Value.ToString();
+            Variables.MovementDistance = MovingDistanceTB.Value;
+        }
+
+        private void MovingFrequencyTB_ValueChanged(object sender, EventArgs e)
+        {
+            MovingFrequencyLabel.Text = MovingFrequencyTB.Value.ToString();
+            Variables.MovementFrequency = MovingFrequencyTB.Value;
+            Random _rnd = new Random();
+            Variables.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(50 - Variables.MovementFrequency, (50 - Variables.MovementFrequency) * 2));
+            SecondsToNextMovementLabel.Text = '(' + Variables.SecondsSpentBeforeNextMovement.ToString() + '/' + Variables.SecondsToNextMovement.ToString() + ')';
+        }
+
+        private void AlphaLevelTB_ValueChanged(object sender, EventArgs e)
+        {
+            AlphaLevelLabel.Text = AlphaLevelTB.Value.ToString();
+            Variables.AlphaLevel = AlphaLevelTB.Value;
+        }
+
+        private void SizeLevelTB_ValueChanged(object sender, EventArgs e)
+        {
+            SizeLevelLabel.Text = SizeLevelTB.Value.ToString();
+            Variables.SizeLevel = SizeLevelTB.Value;
         }
     }
 }
