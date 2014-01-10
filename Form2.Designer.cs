@@ -43,7 +43,8 @@
             this.SizeLevelLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.SizeLevelTB = new System.Windows.Forms.TrackBar();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.FollowTheMouseCB = new System.Windows.Forms.CheckBox();
+            this.VersionLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -202,17 +203,27 @@
             this.SizeLevelTB.Value = 1;
             this.SizeLevelTB.ValueChanged += new System.EventHandler(this.SizeLevelTB_ValueChanged);
             // 
-            // checkBox2
+            // FollowTheMouseCB
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Cursor = System.Windows.Forms.Cursors.No;
-            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBox2.Location = new System.Drawing.Point(12, 188);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(245, 19);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "Follow the mouse (not implemented yet)";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.FollowTheMouseCB.AutoSize = true;
+            this.FollowTheMouseCB.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FollowTheMouseCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.FollowTheMouseCB.Location = new System.Drawing.Point(12, 188);
+            this.FollowTheMouseCB.Name = "FollowTheMouseCB";
+            this.FollowTheMouseCB.Size = new System.Drawing.Size(123, 19);
+            this.FollowTheMouseCB.TabIndex = 6;
+            this.FollowTheMouseCB.Text = "Follow the mouse";
+            this.FollowTheMouseCB.UseVisualStyleBackColor = true;
+            this.FollowTheMouseCB.CheckedChanged += new System.EventHandler(this.FollowTheMouseCB_CheckedChanged);
+            // 
+            // VersionLabel
+            // 
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(504, 219);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(37, 13);
+            this.VersionLabel.TabIndex = 7;
+            this.VersionLabel.Text = "v1312";
             // 
             // Form2
             // 
@@ -220,7 +231,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(556, 332);
-            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.VersionLabel);
+            this.Controls.Add(this.FollowTheMouseCB);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.checkBox1);
@@ -231,7 +243,6 @@
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DFidget Settings";
-            this.Load += new System.EventHandler(this.Form2_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).EndInit();
@@ -262,6 +273,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TrackBar SizeLevelTB;
         private System.Windows.Forms.Label SizeLevelLabel;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox FollowTheMouseCB;
+        private System.Windows.Forms.Label VersionLabel;
     }
 }

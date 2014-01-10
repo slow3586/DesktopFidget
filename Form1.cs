@@ -62,7 +62,7 @@ namespace DesktopFidget
         private int NeedTBS2 = 0;
         private int NeedTBS3 = 0;
         private int TurnAroundState = 0;
-        private float RotationDuringFlight = 0;
+        private int SpeedDuringFlight = 40;
         private double AngleHeightFlight = 0;
         private double AngleWidthFlight = 0;
         private Image LeftWingImage;
@@ -74,8 +74,8 @@ namespace DesktopFidget
 
         //Constant variables
         const int MOVEMENT_TIME_MODIFIER = 50;
-        const int WINDOW_SIZE_WIDTH = 240;
-        const int WINDOW_SIZE_HEIGHT = 220;
+        const int WINDOW_SIZE_WIDTH = 320;
+        const int WINDOW_SIZE_HEIGHT = 360;
 
         public Form1()
         {
@@ -136,14 +136,66 @@ namespace DesktopFidget
 
         }
 
+        private void MovementFunction(Rect _newwindowpos, Rect _windowcurrentpos, int _sleeptime)
+        {
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
+            //FIND THE DISTANCE
+            int _distancex = _newwindowpos.Left - _windowcurrentpos.Left;
+            int _distancey = _newwindowpos.Top - _windowcurrentpos.Top;
+            int _distancesqr = Convert.ToInt32(Math.Floor(Math.Sqrt(Math.Pow(_distancex,2)+ Math.Pow(_distancey,2))));
+            if (_distancesqr > 1000) _distancesqr = 1000;
+            if (_distancesqr < 50) return;
+            //should we turn around?
+            if ((LookingRightWay == true && _distancex < 0) || (LookingRightWay == false && _distancex > 0))
+            {
+                TurnAroundState = 1;
+            }
+            //START MOVING TOWARDS IT
+            double _angle = 0;
+            double _cosx = Math.Sin(_angle);
+            double _cosy = Math.Sin(_angle);
+            int _movex = 0;
+            int _movey = 0;
+            while (_angle < Math.PI)
+            {
+                _cosx = Math.Cos(_angle);
+                _cosy = Math.Cos(_angle);
+                //big scary formulae o' flight
+                _movex = _windowcurrentpos.Left + Convert.ToInt32(Math.Floor(_newwindowpos.Left * (1 - ((1 + (_cosx)) / 2))));
+                _movey = _windowcurrentpos.Top + Convert.ToInt32(Math.Floor(_newwindowpos.Top * (1 - ((1 + (_cosy)) / 2))));
+                SpeedDuringFlight = Convert.ToInt32((_distancesqr/150) * (1 - (Math.Sin(_angle))) + (40-_distancesqr/75));
+                MoveWindow(_window,
+                    _movex,
+                    _movey,
+                    WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, true);
+                _angle = _angle + Math.PI / 500;
+                Thread.Sleep(_sleeptime);
+            }
+            SpeedDuringFlight = 40;
+        }
+
         private void FidgetsMind()
         {
             //Init moving
             Random _rnd = new Random();
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
+            Rect _windowcurrentpos = new Rect();
+            Rect _newwindowpos = new Rect();
             Variables.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(MOVEMENT_TIME_MODIFIER - Variables.MovementFrequency, (MOVEMENT_TIME_MODIFIER - Variables.MovementFrequency) * 2));
             while (true)
             {
-                if (Variables.MovementDistance != 0)
+                if (Variables.FollowTheMouse && Variables.MovementDistance == 0)
+                {
+                    //DebugLabel.Visible = true;
+                    //FIND THE TARGET
+                    GetWindowRect(_window, ref _windowcurrentpos);
+                    _newwindowpos.Left = Cursor.Position.X - WINDOW_SIZE_WIDTH / 2 - _windowcurrentpos.Left + _rnd.Next(-20, 20);
+                    _newwindowpos.Top = Cursor.Position.Y - WINDOW_SIZE_HEIGHT / 2 - _windowcurrentpos.Top + _rnd.Next(-20, 20);
+                    int _sleeptime = 15;
+                    MovementFunction(_newwindowpos, _windowcurrentpos, _sleeptime);
+                }
+                //THIS ONE IS RESPONSIBLE FOR COMPLETELY RANDOM MOVEMENTS
+                if (Variables.MovementDistance != 0 && !Variables.FollowTheMouse)
                 {
                     if (Variables.SecondsSpentBeforeNextMovement > Variables.SecondsToNextMovement)
                     {
@@ -151,14 +203,8 @@ namespace DesktopFidget
                         Variables.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(MOVEMENT_TIME_MODIFIER - Variables.MovementFrequency, (MOVEMENT_TIME_MODIFIER - Variables.MovementFrequency) * 2));
                         //no moving by user
                         AllowManualMovement = false;
-                        //DEFINE CURRENT POS
-                        IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
-                        Rect _windowcurrentpos = new Rect();
-                        GetWindowRect(_window, ref _windowcurrentpos);
                         //FIND THE TARGET
-                        Rect _newwindowpos = new Rect();
-                        _newwindowpos.Top=0;
-                        _newwindowpos.Left=0;
+                        GetWindowRect(_window, ref _windowcurrentpos);
                         do
                         {
                             _newwindowpos.Top = Convert.ToInt32(_rnd.Next(-10 * Variables.MovementDistance, 10 * Variables.MovementDistance));
@@ -171,36 +217,12 @@ namespace DesktopFidget
                             Screen.PrimaryScreen.Bounds.Width - WINDOW_SIZE_WIDTH < _windowcurrentpos.Left + _newwindowpos.Left ||
                             Screen.PrimaryScreen.Bounds.Height - WINDOW_SIZE_HEIGHT < _windowcurrentpos.Top + _newwindowpos.Top
                             );
-                        //FIND THE DISTANCE
-                        int _distancex = _newwindowpos.Left - _windowcurrentpos.Left;
-                        int _distancey = _newwindowpos.Top - _windowcurrentpos.Top;
-                        //should we turn around?
-                        if (_distancex>-50 && LookingRightWay==false)
-                        { TurnAroundState = 1; }
-                        else if (_distancex<50 && LookingRightWay==true)
-                        { TurnAroundState = 1; }
-                        //START MOVING TOWARDS IT
-                        double _anglex = 0;
-                        double _angley = 0;
-                        double _cosx = Math.Sin(_anglex);
-                        double _cosy = Math.Sin(_angley);
-                        int _movex = 0;
-                        int _movey = 0;
-                        while (_anglex<Math.PI)
-                        {
-                            _cosx = Math.Cos(_anglex);
-                            _cosy = Math.Cos(_angley);
-                            //big scary formulae o' flight
-                            _movex = _windowcurrentpos.Left + Convert.ToInt32(Math.Floor(_newwindowpos.Left * (1 - ((1 + (_cosx)) / 2))));
-                            _movey = _windowcurrentpos.Top + Convert.ToInt32(Math.Floor(_newwindowpos.Top   * (1 - ((1 + (_cosy)) / 2))));
-                            RotationDuringFlight=Convert.ToSingle(6.0 * Math.Sin(_anglex));
-                            MoveWindow(_window,
-                                _movex,
-                                _movey,
-                                WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, true);
-                            _anglex = _anglex + Math.PI / 500; _angley = _angley + Math.PI / 500;
-                            Thread.Sleep(45);
-                        }
+
+                        //do the magic
+                        int _sleeptime = 30;
+                        MovementFunction(_newwindowpos, _windowcurrentpos, _sleeptime);
+                        //
+
                         //WE DID IT!
                         //should we turn around again?
                         if (_windowcurrentpos.Left < Screen.PrimaryScreen.Bounds.Width * 0.4F &&
@@ -264,7 +286,7 @@ namespace DesktopFidget
                 RightWingImage = CutFrame[RightWingState];
                 //Refresh the form for the change to appear.
                 RefreshTheForm();
-                Thread.Sleep(40);
+                Thread.Sleep(SpeedDuringFlight);
                 LeftWingState++;
                 RightWingState++;
                 if (LeftWingState == 8) { LeftWingState = 0; }
@@ -431,7 +453,11 @@ namespace DesktopFidget
                         { TailState = 80; }
                     }
                 }
-                Thread.Sleep(50);
+                if (TurnAroundState == 0)
+                {
+                    Thread.Sleep(50);
+                }
+                else { Thread.Sleep(35); }
             }
         }
 
@@ -444,7 +470,7 @@ namespace DesktopFidget
             while (true)
             {
                 HeightBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleHeightFlight) * 20));
-                WidthBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleWidthFlight) * 12));
+                WidthBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleWidthFlight) * 20));
                     AngleHeightFlight = AngleHeightFlight + Math.PI / 150;
                     AngleWidthFlight = AngleWidthFlight + Math.PI / 250;
                 if (AngleHeightFlight > 2*Math.PI) { AngleHeightFlight = 0; }
@@ -589,6 +615,7 @@ namespace DesktopFidget
     {
         public static string WINDOW_NAME = "Desktop Fidget"; 
         public static bool ClickThroughWindow = false;
+        public static bool FollowTheMouse = false;
         public static int MovementDistance = 0;
         public static int MovementFrequency = 0;
         public static int SecondsToNextMovement = 0;

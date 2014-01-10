@@ -25,13 +25,21 @@ namespace DesktopFidget
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
 
-        private bool CheckstateChangedByProgram=false;
+        private bool CheckstateChangedByProgram1 = false;
+        private bool CheckstateChangedByProgram2 = false;
         public Form2()
         {
             InitializeComponent();
             MovingDistanceTB.Value = Variables.MovementDistance;
             MovingFrequencyTB.Value = Variables.MovementFrequency;
             SizeLevelTB.Value = Variables.SizeLevel;
+
+            if (Variables.FollowTheMouse)
+            {
+                CheckstateChangedByProgram2 = true;
+                FollowTheMouseCB.CheckState = CheckState.Checked;
+            }
+
             if (MovingDistanceTB.Value == 0)
             {
                 groupBox2.Visible = false;
@@ -39,14 +47,14 @@ namespace DesktopFidget
             else { groupBox2.Visible = true; };
             if (Variables.ClickThroughWindow == true)
             {
-                CheckstateChangedByProgram = true;
+                CheckstateChangedByProgram1 = true;
                 checkBox1.CheckState = CheckState.Checked;
             }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckstateChangedByProgram == false)
+            if (CheckstateChangedByProgram1 == false)
             {
                 Variables.ClickThroughWindow = !Variables.ClickThroughWindow;
                 IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
@@ -61,12 +69,7 @@ namespace DesktopFidget
                 }
             }
             else
-                CheckstateChangedByProgram = false;
-        }
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
+                CheckstateChangedByProgram1 = false;
         }
 
         private void MovingDistanceTB_ValueChanged(object sender, EventArgs e)
@@ -78,6 +81,7 @@ namespace DesktopFidget
                 groupBox2.Visible = false;
             }
             else { groupBox2.Visible = true; };
+            FollowTheMouseCB.Visible = Variables.MovementDistance>0 ? false : true;
         }
 
         private void MovingFrequencyTB_ValueChanged(object sender, EventArgs e)
@@ -95,9 +99,17 @@ namespace DesktopFidget
             Variables.SizeLevel = SizeLevelTB.Value;
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void FollowTheMouseCB_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (CheckstateChangedByProgram2 == false)
+            {
+                Variables.FollowTheMouse = !Variables.FollowTheMouse;
+            }
+            else
+                CheckstateChangedByProgram2 = false;
+            groupBox1.Visible = Variables.FollowTheMouse ? false : true;
+            //groupBox2.Visible = Variables.FollowTheMouse ? false : true;
+            if (Variables.FollowTheMouse) { MovingDistanceTB.Value = 0; MovingFrequencyTB.Value = 0; }
         }
     }
 }

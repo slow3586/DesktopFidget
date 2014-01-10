@@ -11,6 +11,8 @@ Random floating movements in the vicinity;
 
 Random movements across the monitor (with decent customization);
 
+Follow the mouse function;
+
 Turn around function;
 
 Left click relocation;
@@ -25,6 +27,8 @@ Click the "(num) Release" button at the top of the list of files.
 
 ##How to use:
 Check the notification icons area and find the program's icon; right click it and you will find the settings menu.
+
+Note that if you want to use random movements you will have to disable 'follow the mouse' function and the other way around.
 ####Mouse controls:
 Hold left mouse button: Move
 
@@ -33,6 +37,11 @@ Double click left mouse button: Cast magic
 Click right mouse button: Switch side
 
 ##Changelog:
+#####1.3.1.2
+'Follow the mouse' function finally implemented. It will be improved eventually;
+
+Wings now flap faster depending on Fidget's speed during movements;
+
 #####1.2.3.2
 MUCH smoother side switching animation (fixed wings/tail/teleportation);
 
