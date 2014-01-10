@@ -39,20 +39,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.MovingFrequencyLabel = new System.Windows.Forms.Label();
             this.MovingFrequencyTB = new System.Windows.Forms.TrackBar();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.AlphaLevelLabel = new System.Windows.Forms.Label();
-            this.AlphaLevelTB = new System.Windows.Forms.TrackBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.SizeLevelLabel = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.SizeLevelTB = new System.Windows.Forms.TrackBar();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingFrequencyTB)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AlphaLevelTB)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeLevelTB)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +62,7 @@
             this.groupBox1.Size = new System.Drawing.Size(535, 82);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Moving distance";
+            this.groupBox1.Text = "Movement distance";
             // 
             // label1
             // 
@@ -103,11 +98,11 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBox1.Location = new System.Drawing.Point(12, 367);
+            this.checkBox1.Location = new System.Drawing.Point(12, 213);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(313, 19);
+            this.checkBox1.Size = new System.Drawing.Size(97, 19);
             this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Click through (doesn\'t change window focus on click)";
+            this.checkBox1.Text = "Click through";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -122,7 +117,7 @@
             this.groupBox2.Size = new System.Drawing.Size(535, 82);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Moving frequency";
+            this.groupBox2.Text = "Movement frequency";
             // 
             // SecondsToNextMovementLabel
             // 
@@ -163,101 +158,70 @@
             this.MovingFrequencyTB.TabIndex = 0;
             this.MovingFrequencyTB.ValueChanged += new System.EventHandler(this.MovingFrequencyTB_ValueChanged);
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.AlphaLevelLabel);
-            this.groupBox3.Controls.Add(this.AlphaLevelTB);
-            this.groupBox3.Cursor = System.Windows.Forms.Cursors.No;
-            this.groupBox3.Location = new System.Drawing.Point(12, 188);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(535, 82);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Alpha (not yet)";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 59);
-            this.label4.Name = "label4";
-            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label4.Size = new System.Drawing.Size(219, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Changes the image\'s alpha channel (visibility)";
-            // 
-            // AlphaLevelLabel
-            // 
-            this.AlphaLevelLabel.AutoSize = true;
-            this.AlphaLevelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AlphaLevelLabel.Location = new System.Drawing.Point(501, 20);
-            this.AlphaLevelLabel.Name = "AlphaLevelLabel";
-            this.AlphaLevelLabel.Size = new System.Drawing.Size(15, 16);
-            this.AlphaLevelLabel.TabIndex = 1;
-            this.AlphaLevelLabel.Text = "0";
-            // 
-            // AlphaLevelTB
-            // 
-            this.AlphaLevelTB.Location = new System.Drawing.Point(6, 19);
-            this.AlphaLevelTB.Maximum = 100;
-            this.AlphaLevelTB.Name = "AlphaLevelTB";
-            this.AlphaLevelTB.Size = new System.Drawing.Size(465, 45);
-            this.AlphaLevelTB.TabIndex = 0;
-            this.AlphaLevelTB.ValueChanged += new System.EventHandler(this.AlphaLevelTB_ValueChanged);
-            // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.SizeLevelLabel);
+            this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.SizeLevelTB);
-            this.groupBox4.Cursor = System.Windows.Forms.Cursors.No;
-            this.groupBox4.Location = new System.Drawing.Point(12, 276);
+            this.groupBox4.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.groupBox4.Location = new System.Drawing.Point(12, 238);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(535, 82);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Size (not yet)";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 59);
-            this.label7.Name = "label7";
-            this.label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label7.Size = new System.Drawing.Size(134, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Scales the image up/down";
+            this.groupBox4.Text = "Size";
             // 
             // SizeLevelLabel
             // 
             this.SizeLevelLabel.AutoSize = true;
             this.SizeLevelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SizeLevelLabel.Location = new System.Drawing.Point(501, 20);
+            this.SizeLevelLabel.Location = new System.Drawing.Point(490, 19);
             this.SizeLevelLabel.Name = "SizeLevelLabel";
             this.SizeLevelLabel.Size = new System.Drawing.Size(15, 16);
-            this.SizeLevelLabel.TabIndex = 1;
+            this.SizeLevelLabel.TabIndex = 3;
             this.SizeLevelLabel.Text = "0";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 59);
+            this.label7.Name = "label7";
+            this.label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label7.Size = new System.Drawing.Size(272, 13);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Scales the image up/down. Strange things may happen.";
             // 
             // SizeLevelTB
             // 
-            this.SizeLevelTB.Location = new System.Drawing.Point(6, 19);
-            this.SizeLevelTB.Maximum = 200;
+            this.SizeLevelTB.Location = new System.Drawing.Point(7, 19);
+            this.SizeLevelTB.Maximum = 5;
             this.SizeLevelTB.Minimum = 1;
             this.SizeLevelTB.Name = "SizeLevelTB";
             this.SizeLevelTB.Size = new System.Drawing.Size(465, 45);
             this.SizeLevelTB.TabIndex = 0;
-            this.SizeLevelTB.TickFrequency = 2;
             this.SizeLevelTB.Value = 1;
             this.SizeLevelTB.ValueChanged += new System.EventHandler(this.SizeLevelTB_ValueChanged);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Cursor = System.Windows.Forms.Cursors.No;
+            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkBox2.Location = new System.Drawing.Point(12, 188);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(245, 19);
+            this.checkBox2.TabIndex = 6;
+            this.checkBox2.Text = "Follow the mouse (not implemented yet)";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(556, 398);
+            this.ClientSize = new System.Drawing.Size(556, 332);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.groupBox1);
@@ -274,9 +238,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingFrequencyTB)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AlphaLevelTB)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeLevelTB)).EndInit();
@@ -297,13 +258,10 @@
         private System.Windows.Forms.Label MovingFrequencyLabel;
         private System.Windows.Forms.TrackBar MovingFrequencyTB;
         private System.Windows.Forms.Label SecondsToNextMovementLabel;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label AlphaLevelLabel;
-        private System.Windows.Forms.TrackBar AlphaLevelTB;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label SizeLevelLabel;
         private System.Windows.Forms.TrackBar SizeLevelTB;
+        private System.Windows.Forms.Label SizeLevelLabel;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

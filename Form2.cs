@@ -24,18 +24,19 @@ namespace DesktopFidget
         static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
         public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
-        private readonly string WINDOW_NAME = "Desktop Fidget";
 
         private bool CheckstateChangedByProgram=false;
         public Form2()
         {
             InitializeComponent();
             MovingDistanceTB.Value = Variables.MovementDistance;
-           // MovingDistanceLabel.Text = MovingDistanceTB.Value.ToString();
             MovingFrequencyTB.Value = Variables.MovementFrequency;
-            //MovingFrequencyLabel.Text = MovingFrequencyTB.Value.ToString();
-            AlphaLevelTB.Value = Variables.AlphaLevel;
             SizeLevelTB.Value = Variables.SizeLevel;
+            if (MovingDistanceTB.Value == 0)
+            {
+                groupBox2.Visible = false;
+            }
+            else { groupBox2.Visible = true; };
             if (Variables.ClickThroughWindow == true)
             {
                 CheckstateChangedByProgram = true;
@@ -48,7 +49,7 @@ namespace DesktopFidget
             if (CheckstateChangedByProgram == false)
             {
                 Variables.ClickThroughWindow = !Variables.ClickThroughWindow;
-                IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+                IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
                 if (Variables.ClickThroughWindow)
                 {
                    int _initialStyle = GetWindowLong(_window, -20);
@@ -72,6 +73,11 @@ namespace DesktopFidget
         {
             MovingDistanceLabel.Text = MovingDistanceTB.Value.ToString();
             Variables.MovementDistance = MovingDistanceTB.Value;
+            if (MovingDistanceTB.Value == 0)
+            {
+                groupBox2.Visible = false;
+            }
+            else { groupBox2.Visible = true; };
         }
 
         private void MovingFrequencyTB_ValueChanged(object sender, EventArgs e)
@@ -83,16 +89,15 @@ namespace DesktopFidget
             SecondsToNextMovementLabel.Text = '(' + Variables.SecondsSpentBeforeNextMovement.ToString() + '/' + Variables.SecondsToNextMovement.ToString() + ')';
         }
 
-        private void AlphaLevelTB_ValueChanged(object sender, EventArgs e)
-        {
-            AlphaLevelLabel.Text = AlphaLevelTB.Value.ToString();
-            Variables.AlphaLevel = AlphaLevelTB.Value;
-        }
-
         private void SizeLevelTB_ValueChanged(object sender, EventArgs e)
         {
-            SizeLevelLabel.Text = SizeLevelTB.Value.ToString();
+            SizeLevelLabel.Text = Convert.ToString(SizeLevelTB.Value*25) + '%';
             Variables.SizeLevel = SizeLevelTB.Value;
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

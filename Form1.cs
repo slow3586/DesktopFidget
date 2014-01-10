@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Diagnostics;
 
 namespace DesktopFidget
 {
@@ -35,7 +36,6 @@ namespace DesktopFidget
             public int Top { get; set; }
             public int Right { get; set; }
             public int Bottom { get; set; }    }
-        private readonly string WINDOW_NAME = "Desktop Fidget"; 
         private const int GWL_STYLE = -16;     
         private const int WS_BORDER = 0x00800000;     
         private const int WS_CAPTION = 0x00C00000;   
@@ -50,21 +50,20 @@ namespace DesktopFidget
         private bool AllowManualMovement = true;
         private int LowerBodyState = 160;
         private int TailState = 105;
-        private int UpperBodyState1 = 0;
-        private int UpperBodyState2 = 0;
-        private int UpperBodyState3 = 0;
+        private double UpperBodyState1 = 0;
+        private double UpperBodyState2 = 0;
+        private double UpperBodyState3 = 0;
         private int LeftWingState = 0;
         private int RightWingState = 8;
         private int HeightBonus = 0;
         private int WidthBonus = 0;
-        private int HeightBonusUpperBody = 0;
+        private int WingSideSwitchBonus = 0;
         private int NeedTBS1 = 0;
         private int NeedTBS2 = 0;
         private int NeedTBS3 = 0;
         private int TurnAroundState = 0;
         private float RotationDuringFlight = 0;
         private double AngleHeightFlight = 0;
-        private double AngleHeightUBFlight = 0;
         private double AngleWidthFlight = 0;
         private Image LeftWingImage;
         private Image RightWingImage;
@@ -81,6 +80,21 @@ namespace DesktopFidget
         public Form1()
         {
             InitializeComponent();
+
+            int _c=0;
+            IntPtr _window;
+            do
+            {
+                _window = FindWindowByCaption(IntPtr.Zero, "Desktop Fidget" + " Copy " + Convert.ToString(_c));
+                if (_window != IntPtr.Zero)
+                {
+                    _c++;
+                }
+            }
+            while (_window != IntPtr.Zero);
+                Variables.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
+                this.Text = Variables.WINDOW_NAME;
+
             this.DoubleBuffered = true; //Removing flickering.
             //Cut out frames
             for (int _b=0; _b<6; _b++)
@@ -115,7 +129,7 @@ namespace DesktopFidget
         private void Form1_Load(object sender, EventArgs e)
         {
             //When the form loads this removes the window borders.
-            IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
             SetWindowLong(_window, GWL_STYLE, WS_SYSMENU);
             SetWindowPos(_window, -3, 45, 45, WINDOW_SIZE_WIDTH, WINDOW_SIZE_HEIGHT, 0x0040);
             DrawMenuBar(_window);
@@ -138,7 +152,7 @@ namespace DesktopFidget
                         //no moving by user
                         AllowManualMovement = false;
                         //DEFINE CURRENT POS
-                        IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+                        IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
                         Rect _windowcurrentpos = new Rect();
                         GetWindowRect(_window, ref _windowcurrentpos);
                         //FIND THE TARGET
@@ -250,7 +264,7 @@ namespace DesktopFidget
                 RightWingImage = CutFrame[RightWingState];
                 //Refresh the form for the change to appear.
                 RefreshTheForm();
-                Thread.Sleep(45);
+                Thread.Sleep(40);
                 LeftWingState++;
                 RightWingState++;
                 if (LeftWingState == 8) { LeftWingState = 0; }
@@ -276,31 +290,40 @@ namespace DesktopFidget
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        Thread.Sleep(50);
+                        Thread.Sleep(60);
                     }
                     //Return back to normal.
                     UpperBodyImage = CutFrame[16];
                     ActivateShot = false;
                 }
+
                 //Check for turn around state
                 if (TurnAroundState == 2)
                 {
                     LowerBodyImage = CutFrame[32];
+                    int _b = 131;
                     for (int _a = 33; _a < 40; _a++)
                     {
                         UpperBodyImage = CutFrame[_a];
+                        TailImage = CutFrame[_b];
+                        _b = _b + 4;
+                        WingSideSwitchBonus = WingSideSwitchBonus + 3;
                         RefreshTheForm();
                         if (_a < 39)
-                        { Thread.Sleep(70); }
+                        { Thread.Sleep(50); }
                     }
                     //HAHAHAHA I HAVE NO IDEA WHAT I AM DOING
+                    TailState = 95;
+                    LowerBodyState = 225;
                     LookingRightWay = !LookingRightWay;
+                    WingSideSwitchBonus = 0;
                     if (AngleWidthFlight > Math.PI)
                     { AngleWidthFlight = Math.PI-(2*Math.PI-AngleWidthFlight); }
                     else if (AngleWidthFlight < Math.PI)
                     { AngleWidthFlight = 2*Math.PI-(Math.PI-AngleWidthFlight); }
                     TurnAroundState = 0;
                 }
+
                 //Looking upwards animation.
                 if (UpperBodyState1 == NeedTBS1 )
                 {
@@ -308,11 +331,11 @@ namespace DesktopFidget
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        Thread.Sleep(80);
+                        Thread.Sleep(60);
                     }
                     UpperBodyImage = CutFrame[16];
                     //Wait some time in this state before going back to normal.
-                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 1500)));
+                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 2000)));
                     for (int _a = 23; _a < 25; _a++)
                     {
                         UpperBodyImage = CutFrame[_a];
@@ -330,20 +353,20 @@ namespace DesktopFidget
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        Thread.Sleep(100);
+                        Thread.Sleep(60);
                     }
                     for (int _a = 16; _a < 22; _a++)
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(_rnd.Next(500, 800))); }
-                        else { Thread.Sleep(100); }
+                        if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(_rnd.Next(500, 2000))); }
+                        else { Thread.Sleep(60); }
                     }
                     for (int _a = 21; _a > 16; _a--)
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                       Thread.Sleep(100);
+                       Thread.Sleep(60);
                     }
                     UpperBodyState2 = 0;
                     NeedTBS2 = Convert.ToInt32(_rnd.Next(15, 25));
@@ -356,15 +379,15 @@ namespace DesktopFidget
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        Thread.Sleep(80);
+                        Thread.Sleep(60);
                     }
                     UpperBodyImage = CutFrame[21];
-                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 1000)));
+                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 2000)));
                     for (int _a = 21; _a > 17; _a--)
                     {
                         UpperBodyImage = CutFrame[_a];
                         RefreshTheForm();
-                        Thread.Sleep(100);
+                        Thread.Sleep(60);
                     }
                     UpperBodyState3 = 0;
                     NeedTBS3 = Convert.ToInt32(_rnd.Next(5, 12));
@@ -373,10 +396,13 @@ namespace DesktopFidget
                 //At the end of the day if nothing is happening
                 //put the normal frame on and wait a second.
                 UpperBodyImage = CutFrame[31];
-                UpperBodyState1++;
-                UpperBodyState2++;
-                UpperBodyState3++;
-                Thread.Sleep(1000);
+                if (TurnAroundState == 0)
+                {
+                    UpperBodyState1 = UpperBodyState1 + 0.25;
+                    UpperBodyState2 = UpperBodyState2 + 0.25;
+                    UpperBodyState3 = UpperBodyState3 + 0.25;
+                };
+                Thread.Sleep(250);
             }
         }
 
@@ -386,26 +412,26 @@ namespace DesktopFidget
             {
                 //Same idea here as in upper body loop but with less random
                 //and more looping through the same stuff over and over.
-                if (TurnAroundState == 0)
+                if (TurnAroundState == 1 && (TailState > 135 && TailState < 140))
                 {
-                    LowerBodyImage = CutFrame[LowerBodyState];
-                    LowerBodyState++;
-                    if (LowerBodyState == 239)
-                    { LowerBodyState = 160; }
-                    TailImage = CutFrame[TailState];
-                     TailState++;
-                    if (TailState == 159)
-                    { TailState = 80; }
-                    RefreshTheForm();
+                    TurnAroundState++;
                 }
                 else
                 {
                     if (TurnAroundState != 2)
                     {
-                        TurnAroundState++;
+                        LowerBodyImage = CutFrame[LowerBodyState];
+                        LowerBodyState++;
+                        if (LowerBodyState == 239)
+                        { LowerBodyState = 160; }
+                        TailImage = CutFrame[TailState];
+                        RefreshTheForm();
+                        TailState++;
+                        if (TailState == 159)
+                        { TailState = 80; }
                     }
                 }
-                Thread.Sleep(65);
+                Thread.Sleep(50);
             }
         }
 
@@ -418,16 +444,12 @@ namespace DesktopFidget
             while (true)
             {
                 HeightBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleHeightFlight) * 20));
-                HeightBonusUpperBody = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleHeightUBFlight) * 1));
-                WidthBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleWidthFlight) * 10));
+                WidthBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(AngleWidthFlight) * 12));
                     AngleHeightFlight = AngleHeightFlight + Math.PI / 150;
-                    AngleHeightUBFlight = AngleHeightUBFlight + Math.PI / 75;
-                    AngleWidthFlight = AngleWidthFlight + Math.PI / 350;
+                    AngleWidthFlight = AngleWidthFlight + Math.PI / 250;
                 if (AngleHeightFlight > 2*Math.PI) { AngleHeightFlight = 0; }
-                if (AngleHeightUBFlight > 2 * Math.PI) { AngleHeightUBFlight = 0; }
                 if (AngleWidthFlight > 2 * Math.PI) { AngleWidthFlight = 0; }
                 if (AngleHeightFlight < 0) { AngleHeightFlight = Math.PI*2; }
-                if (AngleHeightUBFlight < 0) { AngleHeightUBFlight = Math.PI*2; }
                 if (AngleWidthFlight < 0) { AngleWidthFlight = Math.PI*2; }
                 Thread.Sleep(25);
             }
@@ -444,31 +466,48 @@ namespace DesktopFidget
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
             if (!LookingRightWay)
             {
-                e.Graphics.TranslateTransform(232, 0);
-                e.Graphics.ScaleTransform(-1F, 1);
+                e.Graphics.TranslateTransform(220, 0);
+                e.Graphics.ScaleTransform(-1 * 0.25F * Convert.ToSingle(Variables.SizeLevel), 1 * 0.25F * Convert.ToSingle(Variables.SizeLevel));
             }
-                //DebugLabel.Text = AngleWidthFlight.ToString();
+            else
+            {
+                e.Graphics.ScaleTransform(1F * 0.25F * Convert.ToSingle(Variables.SizeLevel), 1 * 0.25F * Convert.ToSingle(Variables.SizeLevel));
+            }
 
                  if (TailImage != null)
                  {
                      Point[] _destinationPoints = {
-                    new Point(79 + WidthBonus, 77 + HeightBonus),   // destination for upper-left point 
-                    new Point(143 + WidthBonus, 77 + HeightBonus),  // destination for upper-right point
-                    new Point(63 + WidthBonus, 138 + HeightBonus)};
+                    new Point(79 + WidthBonus - (WingSideSwitchBonus / 2), 77 + HeightBonus),   // destination for upper-left point 
+                    new Point(143 + WidthBonus - (WingSideSwitchBonus / 2), 77 + HeightBonus),  // destination for upper-right point
+                    new Point(63 + WidthBonus - (WingSideSwitchBonus / 2), 138 + HeightBonus)};
                     e.Graphics.DrawImage(TailImage, _destinationPoints);
-                 }  
+                 }
                 
-                if (RightWingImage != null)
-                { e.Graphics.DrawImage(RightWingImage, new Point(110 + WidthBonus, 17 + HeightBonus + HeightBonusUpperBody)); }
-
+                 if (RightWingImage != null)
+                 {
+                     Point[] _destinationPoints = {
+                    new Point(110 + WidthBonus - WingSideSwitchBonus, 17 + HeightBonus),   // destination for upper-left point 
+                    new Point(174 + WidthBonus, 17 + HeightBonus),  // destination for upper-right point
+                    new Point(110 + WidthBonus - WingSideSwitchBonus, 145 + HeightBonus)};
+                    e.Graphics.DrawImage(RightWingImage, _destinationPoints);
+                 } 
                 if (LowerBodyImage != null) 
                 {e.Graphics.DrawImage(LowerBodyImage, new Point(79 + WidthBonus, 66 + HeightBonus));}
-                
+
+                if (LeftWingImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(55 + WidthBonus, 17 + HeightBonus),   // destination for upper-left point 
+                    new Point(119 + WidthBonus - WingSideSwitchBonus, 17 + HeightBonus),  // destination for upper-right point
+                    new Point(55 + WidthBonus, 145 + HeightBonus)};
+                    e.Graphics.DrawImage(LeftWingImage, _destinationPoints);
+                } 
+
                 if (LeftWingImage != null) 
-                { e.Graphics.DrawImage(LeftWingImage, new Point(55 + WidthBonus, 17 + HeightBonus + HeightBonusUpperBody)); }
-                
-                if (UpperBodyImage != null) 
-                { e.Graphics.DrawImage(UpperBodyImage, new Point(75 + WidthBonus, 25 + HeightBonus + HeightBonusUpperBody)); }
+                { e.Graphics.DrawImage(LeftWingImage, new Point(55 + WidthBonus, 17 + HeightBonus)); }
+
+                if (UpperBodyImage != null)
+                { e.Graphics.DrawImage(UpperBodyImage, new Point(75 + WidthBonus, 25 + HeightBonus)); }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -496,7 +535,7 @@ namespace DesktopFidget
             //change the program's position.
             int _xdif = Cursor.Position.X -this.Location.X;
             int _ydif = Cursor.Position.Y -this.Location.Y;
-            IntPtr _window = FindWindowByCaption(IntPtr.Zero, WINDOW_NAME);
+            IntPtr _window = FindWindowByCaption(IntPtr.Zero, Variables.WINDOW_NAME);
             while(LeftMouseButtonDown)
             {
                 Thread.Sleep(40);
@@ -548,12 +587,13 @@ namespace DesktopFidget
 
     public class Variables
     {
+        public static string WINDOW_NAME = "Desktop Fidget"; 
         public static bool ClickThroughWindow = false;
         public static int MovementDistance = 0;
         public static int MovementFrequency = 0;
         public static int SecondsToNextMovement = 0;
         public static int AlphaLevel = 100;
-        public static int SizeLevel = 100;
+        public static int SizeLevel = 4;
         public static int SecondsSpentBeforeNextMovement = 0;
     }
 }
