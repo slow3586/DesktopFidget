@@ -37,19 +37,17 @@ namespace DesktopFidget
             }
         }
 
-        private static void FlightMovement(Var.Rect _newwindowpos, Var.Rect _windowcurrentpos, int _sleeptime)
+        private static void FlightMovement(Var.Rect _newwindowmovement, Var.Rect _windowcurrentpos, int _sleeptime)
         {
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             //no moving by user
             Var.AllowManualMovement = false;
             //FIND THE DISTANCE
-            int _distancex = _newwindowpos.Left - (_windowcurrentpos.Left + Var.LOWER_BODY_X);
-            int _distancey = _newwindowpos.Top - (_windowcurrentpos.Top + Var.LOWER_BODY_Y);
-            int _distancesqr = Convert.ToInt32(Math.Floor(Math.Sqrt(Math.Pow(_distancex, 2) + Math.Pow(_distancey, 2))));
+            int _distancesqr = Convert.ToInt32(Math.Floor(Math.Sqrt(Math.Pow(_newwindowmovement.Left, 2) + Math.Pow(_newwindowmovement.Top, 2))));
             if (_distancesqr > 1000) _distancesqr = 1000;
             if (_distancesqr < 50) return;
             //should we turn around?
-            if ((Var.LookingRightWay == true && _distancex < 0) || (Var.LookingRightWay == false && _distancex > 0))
+            if ((Var.LookingRightWay == true && _newwindowmovement.Left < 0) || (Var.LookingRightWay == false && _newwindowmovement.Left > 0))
             { Var.TurnAroundState = 1; }
             //START MOVING TOWARDS IT
             double _angle = 0;
@@ -62,8 +60,8 @@ namespace DesktopFidget
                 _cosx = Math.Cos(_angle);
                 _cosy = Math.Cos(_angle);
                 //big scary formulae o' flight
-                _movex = _windowcurrentpos.Left + Convert.ToInt32(Math.Floor(_newwindowpos.Left * (1 - ((1 + (_cosx)) / 2))));
-                _movey = _windowcurrentpos.Top + Convert.ToInt32(Math.Floor(_newwindowpos.Top * (1 - ((1 + (_cosy)) / 2))));
+                _movex = _windowcurrentpos.Left + Convert.ToInt32(Math.Floor(_newwindowmovement.Left * (1 - ((1 + (_cosx)) / 2))));
+                _movey = _windowcurrentpos.Top + Convert.ToInt32(Math.Floor(_newwindowmovement.Top * (1 - ((1 + (_cosy)) / 2))));
                 Var.WingsSpeedParameter = Convert.ToInt32((_distancesqr / Var.WingsSpeedMultiplier) * (1 - (Math.Sin(_angle))) + (40 - _distancesqr / (Var.WingsSpeedMultiplier / 2)));
                 NativeMethods.MoveWindow(_window,
                     _movex,
@@ -82,7 +80,7 @@ namespace DesktopFidget
             Random _rnd = new Random();
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             Var.Rect _windowcurrentpos = new Var.Rect();
-            Var.Rect _newwindowpos = new Var.Rect();
+            Var.Rect _newwindowmovement = new Var.Rect();
             Var.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency, (Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency) * 2));
             while (true)
             {
@@ -91,10 +89,10 @@ namespace DesktopFidget
                     //DebugLabel.Visible = true;
                     //FIND THE TARGET
                     NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
-                    _newwindowpos.Left = Cursor.Position.X + _rnd.Next(-20, 20);
-                    _newwindowpos.Top = Cursor.Position.Y + _rnd.Next(-20, 20);
+                    _newwindowmovement.Left = Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X + _rnd.Next(-10,10);
+                    _newwindowmovement.Top = Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y + _rnd.Next(-10, 10);
                     int _sleeptime = 15;
-                    FlightMovement(_newwindowpos, _windowcurrentpos, _sleeptime);
+                    FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
                 }
                 //THIS ONE IS RESPONSIBLE FOR COMPLETELY RANDOM MOVEMENTS
                 if (Var.MovementDistance != 0 && !Var.FollowTheMouse)
@@ -107,20 +105,20 @@ namespace DesktopFidget
                         NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
                         do
                         {
-                            _newwindowpos.Top = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance));
-                            _newwindowpos.Left = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance));
+                            _newwindowmovement.Top = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance));
+                            _newwindowmovement.Left = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance));
                         } while
                             //Make sure it's inside the monitor
                             (
-                            0 > _windowcurrentpos.Left + _newwindowpos.Left ||
-                            0 > _windowcurrentpos.Top + _newwindowpos.Top ||
-                            Screen.PrimaryScreen.Bounds.Width - Var.WindowSizeX < _windowcurrentpos.Left + _newwindowpos.Left ||
-                            Screen.PrimaryScreen.Bounds.Height - Var.WindowSizeY < _windowcurrentpos.Top + _newwindowpos.Top
+                            0 > _windowcurrentpos.Left + _newwindowmovement.Left ||
+                            0 > _windowcurrentpos.Top + _newwindowmovement.Top ||
+                            Screen.PrimaryScreen.Bounds.Width - Var.WindowSizeX < _windowcurrentpos.Left + _newwindowmovement.Left ||
+                            Screen.PrimaryScreen.Bounds.Height - Var.WindowSizeY < _windowcurrentpos.Top + _newwindowmovement.Top
                             );
 
                         //do the magic
                         int _sleeptime = 30;
-                        FlightMovement(_newwindowpos, _windowcurrentpos, _sleeptime);
+                        FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
                         //
 
                         //WE DID IT!

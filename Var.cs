@@ -64,7 +64,7 @@ namespace DesktopFidget
         public static int MOVEMENT_TIME_MODIFIER = 50;
         public static int LOWER_BODY_X = 79;
         public static int LOWER_BODY_Y = 66;
-        public static int WingsSpeedMultiplier = 200;
+        public static int WingsSpeedMultiplier = 150;
 
         public static bool DebugMode = false;
         public static int WindowSizeX = 230;
