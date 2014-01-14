@@ -1,6 +1,6 @@
 ﻿namespace DesktopFidget
 {
-    partial class Form1
+    partial class GraphicsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GraphicsForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +79,7 @@
             this.DebugLabel.Text = "label1";
             this.DebugLabel.Visible = false;
             // 
-            // Form1
+            // GraphicsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -88,7 +88,7 @@
             this.Controls.Add(this.DebugLabel);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "GraphicsForm";
             this.ShowInTaskbar = false;
             this.Text = "Desktop Fidget";
             this.TopMost = true;

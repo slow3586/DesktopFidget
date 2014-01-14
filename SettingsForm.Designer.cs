@@ -1,6 +1,6 @@
 ﻿namespace DesktopFidget
 {
-    partial class Form2
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.MovingDistanceLabel = new System.Windows.Forms.Label();
@@ -45,6 +45,7 @@
             this.SizeLevelTB = new System.Windows.Forms.TrackBar();
             this.FollowTheMouseCB = new System.Windows.Forms.CheckBox();
             this.VersionLabel = new System.Windows.Forms.Label();
+            this.SaveSettingsButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -219,18 +220,29 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(504, 219);
+            this.VersionLabel.Location = new System.Drawing.Point(510, 222);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(37, 13);
             this.VersionLabel.TabIndex = 7;
-            this.VersionLabel.Text = "v1312";
+            this.VersionLabel.Text = "v2012";
             // 
-            // Form2
+            // SaveSettingsButton
+            // 
+            this.SaveSettingsButton.Location = new System.Drawing.Point(472, 188);
+            this.SaveSettingsButton.Name = "SaveSettingsButton";
+            this.SaveSettingsButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveSettingsButton.TabIndex = 8;
+            this.SaveSettingsButton.Text = "Save INI";
+            this.SaveSettingsButton.UseVisualStyleBackColor = true;
+            this.SaveSettingsButton.Click += new System.EventHandler(this.SaveSettingsButton_Click);
+            // 
+            // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(556, 332);
+            this.Controls.Add(this.SaveSettingsButton);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.FollowTheMouseCB);
             this.Controls.Add(this.groupBox4);
@@ -240,7 +252,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form2";
+            this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DFidget Settings";
             this.groupBox1.ResumeLayout(false);
@@ -275,5 +287,6 @@
         private System.Windows.Forms.Label SizeLevelLabel;
         private System.Windows.Forms.CheckBox FollowTheMouseCB;
         private System.Windows.Forms.Label VersionLabel;
+        private System.Windows.Forms.Button SaveSettingsButton;
     }
 }

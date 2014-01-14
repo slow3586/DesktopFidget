@@ -13,6 +13,8 @@ Random floating movements in the vicinity;
 
 Random movements across the monitor (with decent customization);
 
+Settings file;
+
 Follow the mouse function;
 
 Turn around function;
@@ -30,6 +32,8 @@ Click the "(num) Release" button at the top of the list of files.
 ##How to use:
 Check the notification icons area and find the program's icon; right click it and you will find the settings menu.
 
+During first run a .INI file will be created. All the changes to settings you make will be stored there. You can find the .INI file the executable's folder. Feel free to change it manually for advanced settings.
+
 Note that if you want to use random movements you will have to disable 'follow the mouse' function and the other way around.
 ####Mouse controls:
 Hold left mouse button: Move
@@ -39,6 +43,15 @@ Double click left mouse button: Cast magic
 Click right mouse button: Switch side
 
 ##Changelog:
+#####2.0.1.2
+All the settings are now stored in an .INI file in the executable's folder and will be loaded automatically when the program starts;
+
+Completely remade source code's layout;
+
+Fixed teleportation during side switching if the size was custom;
+
+Improved Fidget's flight direction detection;
+
 #####1.3.1.2
 'Follow the mouse' function finally implemented. It will be improved eventually;
 
