@@ -14,40 +14,37 @@ namespace DesktopFidget
 
     public partial class SettingsForm : Form
     {
-
-        private bool CheckstateChangedByProgram1 = false;
-        private bool CheckstateChangedByProgram2 = false;
         public SettingsForm()
         {
             InitializeComponent();
+
+            VersionLabel.Text = 'v' + Convert.ToString(Var.ProgramVersion);
             MovingDistanceTB.Value = Var.MovementDistance;
             MovingFrequencyTB.Value = Var.MovementFrequency;
             SizeLevelTB.Value = Var.SizeLevel;
+            if (Var.AnimationsFrequency > 255)
+                AnimationsFrequencyTB.Value = 255;
+            else
+                AnimationsFrequencyTB.Value = Var.AnimationsFrequency;
 
             if (Var.FollowTheMouse)
-            {
-                if (!Var.IniFileWasLoaded) { CheckstateChangedByProgram2 = true; }
                 FollowTheMouseCB.CheckState = CheckState.Checked;
-            }
 
             if (MovingDistanceTB.Value == 0)
-            {
                 groupBox2.Visible = false;
-            }
-            else { groupBox2.Visible = true; };
+            else
+                groupBox2.Visible = true;
+
             if (Var.ClickThroughWindow == true)
-            {
-                if (!Var.IniFileWasLoaded) { CheckstateChangedByProgram1 = true; }
-                checkBox1.CheckState = CheckState.Checked;
-            }
-            Var.IniFileWasLoaded = false;
+                ClickThroughCB.CheckState = CheckState.Checked;
+
+            if (Var.TurnTowardsCenter == true)
+                TurnTowardsCenterCB.CheckState = CheckState.Checked;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckstateChangedByProgram1 == false)
-            {
-                if (!Var.IniFileWasLoaded) { Var.ClickThroughWindow = !Var.ClickThroughWindow; }
+                Var.ClickThroughWindow = ClickThroughCB.Checked;
                 IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
                 if (Var.ClickThroughWindow)
                 {
@@ -58,9 +55,6 @@ namespace DesktopFidget
                 {
                     NativeMethods.SetWindowLong(_window, -20, 0x80000);
                 }
-            }
-            else
-                CheckstateChangedByProgram1 = false;
         }
 
         private void MovingDistanceTB_ValueChanged(object sender, EventArgs e)
@@ -92,20 +86,30 @@ namespace DesktopFidget
 
         private void FollowTheMouseCB_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckstateChangedByProgram2 == false)
-            {
-                if (!Var.IniFileWasLoaded) { Var.FollowTheMouse = !Var.FollowTheMouse; }
-            }
-            else
-                CheckstateChangedByProgram2 = false;
+            Var.FollowTheMouse = FollowTheMouseCB.Checked;
             groupBox1.Visible = Var.FollowTheMouse ? false : true;
-            //groupBox2.Visible = Variables.FollowTheMouse ? false : true;
             if (Var.FollowTheMouse) { MovingDistanceTB.Value = 0; MovingFrequencyTB.Value = 0; }
         }
 
         private void SaveSettingsButton_Click(object sender, EventArgs e)
         {
             IniFile.OpenSettingsFile(false,true);
+        }
+
+        private void TurnTowardsCenterCB_CheckedChanged(object sender, EventArgs e)
+        {
+            Var.TurnTowardsCenter = TurnTowardsCenterCB.Checked;   
+        }
+
+        private void AnimationsFrequencyTB_ValueChanged(object sender, EventArgs e)
+        {
+            AnimationsFrequencyLabel.Text = Convert.ToString(AnimationsFrequencyTB.Value) + '%';
+            Var.AnimationsFrequency = AnimationsFrequencyTB.Value;
+            if (AnimationsFrequencyTB.Value == 255)
+            {
+                AnimationsFrequencyLabel.Text = "NVR!";
+                Var.AnimationsFrequency = 100000;
+            }
         }
     }
 }

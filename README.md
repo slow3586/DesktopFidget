@@ -1,6 +1,6 @@
 #DesktopFidget
 A (not so small anymore) project on C# made in Visual Studio 12. Using graphics functions the program cuts out frames out of an image file and then draws them together, resulting in a complete image, as demonstrated here:
-http://www.youtube.com/watch?v=tdC5AmRkxtw
+http://youtu.be/Tle-syKSwUw (new video)
 
 ##Features (so far):
 All the existing animation frames are actually used;
@@ -11,7 +11,7 @@ Random floating movements in the vicinity;
 
 Random movements across the monitor (with decent customization);
 
-Settings file;
+Settings file (saving\loading);
 
 Follow the mouse function;
 
@@ -30,7 +30,7 @@ Click the "(num) Release" button at the top of the list of files.
 ##How to use:
 Check the notification icons area and find the program's icon; right click it and you will find the settings menu.
 
-During first run a .INI file will be created. All the changes to settings you make will be stored there. You can find the .INI file the executable's folder. Feel free to change it manually for advanced settings.
+During first launch an .INI file will be created. All the changes to settings you make will be stored there. You can find the .INI file the executable's folder. Feel free to change it manually for advanced settings.
 
 Note that if you want to use random movements you will have to disable 'follow the mouse' function and the other way around.
 ####Mouse controls:
@@ -41,6 +41,18 @@ Double click left mouse button: Cast magic
 Click right mouse button: Switch side
 
 ##Changelog:
+#####2.1.1.2
+'Always turn towards center of screen' function;
+
+'Animations frequency' customization;
+
+Tail now moves faster while moving from side to side;
+
+Head animations now get cancelled when side switching is ordered;
+
+#####2.0.1.2 quickfix
+Fixed movement during mouse following;
+
 #####2.0.1.2
 All the settings are now stored in an .INI file in the executable's folder and will be loaded automatically when the program starts;
 

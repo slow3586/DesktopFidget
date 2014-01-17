@@ -33,7 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.MovingDistanceLabel = new System.Windows.Forms.Label();
             this.MovingDistanceTB = new System.Windows.Forms.TrackBar();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.ClickThroughCB = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.SecondsToNextMovementLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,12 +46,19 @@
             this.FollowTheMouseCB = new System.Windows.Forms.CheckBox();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.SaveSettingsButton = new System.Windows.Forms.Button();
+            this.TurnTowardsCenterCB = new System.Windows.Forms.CheckBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.AnimationsFrequencyLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.AnimationsFrequencyTB = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingFrequencyTB)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeLevelTB)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AnimationsFrequencyTB)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -96,17 +103,17 @@
             this.MovingDistanceTB.TabIndex = 0;
             this.MovingDistanceTB.ValueChanged += new System.EventHandler(this.MovingDistanceTB_ValueChanged);
             // 
-            // checkBox1
+            // ClickThroughCB
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkBox1.Location = new System.Drawing.Point(12, 213);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(97, 19);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Click through";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.ClickThroughCB.AutoSize = true;
+            this.ClickThroughCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ClickThroughCB.Location = new System.Drawing.Point(12, 213);
+            this.ClickThroughCB.Name = "ClickThroughCB";
+            this.ClickThroughCB.Size = new System.Drawing.Size(97, 19);
+            this.ClickThroughCB.TabIndex = 2;
+            this.ClickThroughCB.Text = "Click through";
+            this.ClickThroughCB.UseVisualStyleBackColor = true;
+            this.ClickThroughCB.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -166,7 +173,7 @@
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.SizeLevelTB);
             this.groupBox4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.groupBox4.Location = new System.Drawing.Point(12, 238);
+            this.groupBox4.Location = new System.Drawing.Point(12, 263);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(535, 82);
             this.groupBox4.TabIndex = 5;
@@ -189,9 +196,9 @@
             this.label7.Location = new System.Drawing.Point(16, 59);
             this.label7.Name = "label7";
             this.label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label7.Size = new System.Drawing.Size(272, 13);
+            this.label7.Size = new System.Drawing.Size(137, 13);
             this.label7.TabIndex = 2;
-            this.label7.Text = "Scales the image up/down. Strange things may happen.";
+            this.label7.Text = "Scales the image up/down.";
             // 
             // SizeLevelTB
             // 
@@ -222,9 +229,9 @@
             this.VersionLabel.AutoSize = true;
             this.VersionLabel.Location = new System.Drawing.Point(510, 222);
             this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(37, 13);
+            this.VersionLabel.Size = new System.Drawing.Size(13, 13);
             this.VersionLabel.TabIndex = 7;
-            this.VersionLabel.Text = "v2012";
+            this.VersionLabel.Text = "v";
             // 
             // SaveSettingsButton
             // 
@@ -236,18 +243,80 @@
             this.SaveSettingsButton.UseVisualStyleBackColor = true;
             this.SaveSettingsButton.Click += new System.EventHandler(this.SaveSettingsButton_Click);
             // 
+            // TurnTowardsCenterCB
+            // 
+            this.TurnTowardsCenterCB.AutoSize = true;
+            this.TurnTowardsCenterCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TurnTowardsCenterCB.Location = new System.Drawing.Point(12, 238);
+            this.TurnTowardsCenterCB.Name = "TurnTowardsCenterCB";
+            this.TurnTowardsCenterCB.Size = new System.Drawing.Size(223, 19);
+            this.TurnTowardsCenterCB.TabIndex = 9;
+            this.TurnTowardsCenterCB.Text = "Always turn towards center of screen";
+            this.TurnTowardsCenterCB.UseVisualStyleBackColor = true;
+            this.TurnTowardsCenterCB.CheckedChanged += new System.EventHandler(this.TurnTowardsCenterCB_CheckedChanged);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.AnimationsFrequencyLabel);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.AnimationsFrequencyTB);
+            this.groupBox3.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.groupBox3.Location = new System.Drawing.Point(12, 351);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(535, 82);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Animations frequency";
+            // 
+            // AnimationsFrequencyLabel
+            // 
+            this.AnimationsFrequencyLabel.AutoSize = true;
+            this.AnimationsFrequencyLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.AnimationsFrequencyLabel.Location = new System.Drawing.Point(490, 19);
+            this.AnimationsFrequencyLabel.Name = "AnimationsFrequencyLabel";
+            this.AnimationsFrequencyLabel.Size = new System.Drawing.Size(15, 16);
+            this.AnimationsFrequencyLabel.TabIndex = 3;
+            this.AnimationsFrequencyLabel.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 59);
+            this.label4.Name = "label4";
+            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label4.Size = new System.Drawing.Size(433, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Defines how often random head animation will happen. Default is ~8 seconds for ea" +
+    "ch set.";
+            // 
+            // AnimationsFrequencyTB
+            // 
+            this.AnimationsFrequencyTB.LargeChange = 25;
+            this.AnimationsFrequencyTB.Location = new System.Drawing.Point(7, 19);
+            this.AnimationsFrequencyTB.Maximum = 255;
+            this.AnimationsFrequencyTB.Minimum = 50;
+            this.AnimationsFrequencyTB.Name = "AnimationsFrequencyTB";
+            this.AnimationsFrequencyTB.Size = new System.Drawing.Size(465, 45);
+            this.AnimationsFrequencyTB.SmallChange = 5;
+            this.AnimationsFrequencyTB.TabIndex = 0;
+            this.AnimationsFrequencyTB.TickFrequency = 5;
+            this.AnimationsFrequencyTB.Value = 50;
+            this.AnimationsFrequencyTB.ValueChanged += new System.EventHandler(this.AnimationsFrequencyTB_ValueChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(556, 332);
+            this.ClientSize = new System.Drawing.Size(556, 444);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.TurnTowardsCenterCB);
             this.Controls.Add(this.SaveSettingsButton);
             this.Controls.Add(this.VersionLabel);
             this.Controls.Add(this.FollowTheMouseCB);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.ClickThroughCB);
             this.Controls.Add(this.groupBox1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -264,6 +333,9 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SizeLevelTB)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AnimationsFrequencyTB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,7 +347,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label MovingDistanceLabel;
         private System.Windows.Forms.TrackBar MovingDistanceTB;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox ClickThroughCB;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label MovingFrequencyLabel;
@@ -288,5 +360,10 @@
         private System.Windows.Forms.CheckBox FollowTheMouseCB;
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Button SaveSettingsButton;
+        private System.Windows.Forms.CheckBox TurnTowardsCenterCB;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label AnimationsFrequencyLabel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar AnimationsFrequencyTB;
     }
 }

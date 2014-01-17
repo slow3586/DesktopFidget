@@ -217,6 +217,17 @@ namespace DesktopFidget
                 int _newy = Cursor.Position.Y;
                 NativeMethods.SetWindowPos(_window, 0, _newx-_xdif, _newy-_ydif, Var.WindowSizeX, Var.WindowSizeY, 0x0040);
             }
+            //Turn around?
+            if (Var.TurnTowardsCenter)
+            {
+                Var.Rect _windowcurrentpos = new Var.Rect();
+                int _screenwidth = Screen.PrimaryScreen.Bounds.Width;
+                NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
+                if ((_windowcurrentpos.Left + Var.LOWER_BODY_X > _screenwidth / 2) && Var.LookingRightWay)
+                    Var.TurnAroundState = 1;
+                else if ((_windowcurrentpos.Left + Var.LOWER_BODY_X < _screenwidth / 2) && !Var.LookingRightWay)
+                    Var.TurnAroundState = 1;
+            }
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -255,7 +266,7 @@ namespace DesktopFidget
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //IniFile.OpenSettingsFile(false);
+            notifyIcon1.Visible = false;
             Application.Exit();
         }
     }

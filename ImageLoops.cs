@@ -26,7 +26,7 @@ namespace DesktopFidget
                 Var.RightWingImage = Var.CutFrame[Var.RightWingState];
                 //Refresh the form for the change to appear.
                 GraphicsForm.RefreshTheForm();
-                Thread.Sleep(Var.WingsSpeedParameter);
+                Thread.Sleep(Var.WingsSleepParameter);
                 Var.LeftWingState++;
                 Var.RightWingState++;
                 if (Var.LeftWingState == 8) { Var.LeftWingState = 0; }
@@ -39,9 +39,9 @@ namespace DesktopFidget
             //Create random numbers that define when the animations
             //will happen.
             Random _rnd = new Random();
-            Var.NeedTBS1 = Convert.ToInt32(_rnd.Next(5, 12));
-            Var.NeedTBS2 = Convert.ToInt32(_rnd.Next(15, 25));
-            Var.NeedTBS3 = Convert.ToInt32(_rnd.Next(5, 12));
+            Var.NeedTBS1 = Convert.ToInt32(_rnd.Next(6*Var.AnimationsFrequency/100, 10*Var.AnimationsFrequency/100));
+            Var.NeedTBS2 = Convert.ToInt32(_rnd.Next(15 * Var.AnimationsFrequency / 100, 25 * Var.AnimationsFrequency / 100));
+            Var.NeedTBS3 = Convert.ToInt32(_rnd.Next(6 * Var.AnimationsFrequency / 100, 10 * Var.AnimationsFrequency / 100));
             while (true)
             {
                 //Check for double click animation.
@@ -93,7 +93,8 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(60);
+                        if (Var.UpperBodyState1 != 0)
+                            Thread.Sleep(60);
                     }
                     Var.UpperBodyImage = Var.CutFrame[16];
                     //Wait some time in this state before going back to normal.
@@ -102,7 +103,8 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(100);
+                        if (Var.UpperBodyState1 != 0)
+                            Thread.Sleep(100);
                     }
                     Var.UpperBodyState1 = 0;
                     Var.NeedTBS1 = Convert.ToInt32(_rnd.Next(5, 12));
@@ -115,20 +117,25 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(60);
+                        if (Var.UpperBodyState2 != 0)
+                            Thread.Sleep(60);
                     }
                     for (int _a = 16; _a < 22; _a++)
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(_rnd.Next(500, 2000))); }
-                        else { Thread.Sleep(60); }
+                        if (Var.UpperBodyState2 != 0)
+                        {
+                            if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(_rnd.Next(500, 2000))); }
+                            else { Thread.Sleep(60); }
+                        }
                     }
                     for (int _a = 21; _a > 16; _a--)
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(60);
+                        if (Var.UpperBodyState2 != 0)
+                            Thread.Sleep(60);
                     }
                     Var.UpperBodyState2 = 0;
                     Var.NeedTBS2 = Convert.ToInt32(_rnd.Next(15, 25));
@@ -141,7 +148,8 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(60);
+                        if (Var.UpperBodyState3 != 0)
+                            Thread.Sleep(60);
                     }
                     Var.UpperBodyImage = Var.CutFrame[21];
                     Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 2000)));
@@ -149,7 +157,8 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        Thread.Sleep(60);
+                        if (Var.UpperBodyState3 != 0)
+                            Thread.Sleep(60);
                     }
                     Var.UpperBodyState3 = 0;
                     Var.NeedTBS3 = Convert.ToInt32(_rnd.Next(5, 12));
@@ -176,6 +185,9 @@ namespace DesktopFidget
                 //and more looping through the same stuff over and over.
                 if (Var.TurnAroundState == 1 && (Var.TailState > 135 && Var.TailState < 140))
                 {
+                    Var.UpperBodyState1 = 0;
+                    Var.UpperBodyState2 = 0;
+                    Var.UpperBodyState3 = 0;
                     Var.TurnAroundState++;
                 }
                 else
@@ -195,7 +207,10 @@ namespace DesktopFidget
                 }
                 if (Var.TurnAroundState == 0)
                 {
-                    Thread.Sleep(50);
+                    int _sleepmod=0;
+                    double _sleepmodangle = (Math.PI / 40) * Var.TailState - 20;
+                    _sleepmod = Convert.ToInt32(6 * Math.Abs(Math.Sin(_sleepmodangle)));
+                    Thread.Sleep(45 -_sleepmod);
                 }
                 else { Thread.Sleep(35); }
             }

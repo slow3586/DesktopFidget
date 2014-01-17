@@ -12,8 +12,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.IO;
 
-//I got this example from http://www.codeproject.com/Articles/1966/An-INI-file-handling-class-using-C
-//Not made by me
+//Made from example: http://www.codeproject.com/Articles/1966/An-INI-file-handling-class-using-C
 
 namespace DesktopFidget
 {
@@ -76,8 +75,10 @@ namespace DesktopFidget
                 {
                     Var.ClickThroughWindow = bool.Parse(inifile.IniReadValue("Common", "ClickThroughWindow"));
                     Var.FollowTheMouse = bool.Parse(inifile.IniReadValue("Common", "FollowTheMouse"));
+                    Var.TurnTowardsCenter = bool.Parse(inifile.IniReadValue("Common", "TurnTowardsCenter"));
                     Var.MovementDistance = Convert.ToInt32(inifile.IniReadValue("Common", "MovementDistance"));
                     Var.MovementFrequency = Convert.ToInt32(inifile.IniReadValue("Common", "MovementFrequency"));
+                    Var.AnimationsFrequency = Convert.ToInt32(inifile.IniReadValue("Common", "AnimationsFrequency"));
                     Var.SizeLevel = Convert.ToInt32(inifile.IniReadValue("Common", "SizeLevel"));
                     Var.WindowStartingX = Convert.ToInt32(inifile.IniReadValue("Advanced", "WindowStartingX"));
                     Var.WindowStartingY = Convert.ToInt32(inifile.IniReadValue("Advanced", "WindowStartingY"));
@@ -107,8 +108,10 @@ namespace DesktopFidget
                     inifile.IniWriteValue("Do not edit", "Version", Convert.ToString(Var.ProgramVersion));
                     inifile.IniWriteValue("Common", "ClickThroughWindow", Convert.ToString(Var.ClickThroughWindow));
                     inifile.IniWriteValue("Common", "FollowTheMouse", Convert.ToString(Var.FollowTheMouse));
+                    inifile.IniWriteValue("Common", "TurnTowardsCenter", Convert.ToString(Var.TurnTowardsCenter));
                     inifile.IniWriteValue("Common", "MovementDistance", Convert.ToString(Var.MovementDistance));
                     inifile.IniWriteValue("Common", "MovementFrequency", Convert.ToString(Var.MovementFrequency));
+                    inifile.IniWriteValue("Common", "AnimationsFrequency", Convert.ToString(Var.AnimationsFrequency));
                     inifile.IniWriteValue("Common", "SizeLevel", Convert.ToString(Var.SizeLevel));
                     inifile.IniWriteValue("Advanced", "WindowStartingX", Convert.ToString(Var.WindowStartingX));
                     inifile.IniWriteValue("Advanced", "WindowStartingY", Convert.ToString(Var.WindowStartingY));

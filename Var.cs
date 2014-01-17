@@ -51,7 +51,6 @@ namespace DesktopFidget
         public static int NeedTBS2 = 0;
         public static int NeedTBS3 = 0;
         public static int TurnAroundState = 0;
-        public static int WingsSpeedParameter = 40;
         public static double AngleHeightFlight = 0;
         public static double AngleWidthFlight = 0;
         public static Image LeftWingImage;
@@ -64,7 +63,11 @@ namespace DesktopFidget
         public static int MOVEMENT_TIME_MODIFIER = 50;
         public static int LOWER_BODY_X = 79;
         public static int LOWER_BODY_Y = 66;
-        public static int WingsSpeedMultiplier = 150;
+        public static int WingsSleepParameterDefault = 37;
+        public static int WingsSleepParameter = 37;
+        public static int WingsSleepMultiplier = 140;
+        public static int SleepDuringMouseFollow = 15;
+        public static int SleepDuringRandomMoves = 27;
 
         public static bool DebugMode = false;
         public static int WindowSizeX = 230;
@@ -77,13 +80,15 @@ namespace DesktopFidget
         public static int WidthBonusIncreaseMultiplier = 250;
         public static int FlightSpeedMultiplier = 500;
 
-        public static int ProgramVersion = 2012;
+        public static int ProgramVersion = 2112;
         public static string WINDOW_NAME = "Desktop Fidget";
         public static bool ClickThroughWindow = false;
         public static bool FollowTheMouse = false;
+        public static bool TurnTowardsCenter = false;
         public static int MovementDistance = 0;
         public static int MovementFrequency = 0;
         public static int SecondsToNextMovement = 0;
+        public static int AnimationsFrequency = 100;
         public static int AlphaLevel = 100;
         public static int SizeLevel = 4;
         public static int SecondsSpentBeforeNextMovement = 0;

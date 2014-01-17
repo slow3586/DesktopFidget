@@ -62,7 +62,7 @@ namespace DesktopFidget
                 //big scary formulae o' flight
                 _movex = _windowcurrentpos.Left + Convert.ToInt32(Math.Floor(_newwindowmovement.Left * (1 - ((1 + (_cosx)) / 2))));
                 _movey = _windowcurrentpos.Top + Convert.ToInt32(Math.Floor(_newwindowmovement.Top * (1 - ((1 + (_cosy)) / 2))));
-                Var.WingsSpeedParameter = Convert.ToInt32((_distancesqr / Var.WingsSpeedMultiplier) * (1 - (Math.Sin(_angle))) + (40 - _distancesqr / (Var.WingsSpeedMultiplier / 2)));
+                Var.WingsSleepParameter = Convert.ToInt32((_distancesqr / Var.WingsSleepMultiplier) * (1 - (Math.Sin(_angle))) + (Var.WingsSleepParameterDefault - _distancesqr / (Var.WingsSleepMultiplier / 2)));
                 NativeMethods.MoveWindow(_window,
                     _movex,
                     _movey,
@@ -70,7 +70,7 @@ namespace DesktopFidget
                 _angle = _angle + Math.PI / Var.FlightSpeedMultiplier;
                 Thread.Sleep(_sleeptime);
             }
-            Var.WingsSpeedParameter = 40;
+            Var.WingsSleepParameter = Var.WingsSleepParameterDefault;
             Var.AllowManualMovement = true;
         }
 
@@ -81,6 +81,8 @@ namespace DesktopFidget
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             Var.Rect _windowcurrentpos = new Var.Rect();
             Var.Rect _newwindowmovement = new Var.Rect();
+            int _screenwidth=Screen.PrimaryScreen.Bounds.Width;
+            int _screenheight= Screen.PrimaryScreen.Bounds.Height;
             Var.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency, (Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency) * 2));
             while (true)
             {
@@ -91,7 +93,7 @@ namespace DesktopFidget
                     NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
                     _newwindowmovement.Left = Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X + _rnd.Next(-10,10);
                     _newwindowmovement.Top = Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y + _rnd.Next(-10, 10);
-                    int _sleeptime = 15;
+                    int _sleeptime = Var.SleepDuringMouseFollow;
                     FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
                 }
                 //THIS ONE IS RESPONSIBLE FOR COMPLETELY RANDOM MOVEMENTS
@@ -105,24 +107,32 @@ namespace DesktopFidget
                         NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
                         do
                         {
-                            _newwindowmovement.Top = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Height / 2 * Var.MovementDistance));
-                            _newwindowmovement.Left = Convert.ToInt32(_rnd.Next(-Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance, Screen.PrimaryScreen.Bounds.Width / 2 * Var.MovementDistance));
+                            _newwindowmovement.Top = Convert.ToInt32(_rnd.Next(-_screenheight / 2 * Var.MovementDistance, _screenheight / 2 * Var.MovementDistance));
+                            _newwindowmovement.Left = Convert.ToInt32(_rnd.Next(-_screenwidth / 2 * Var.MovementDistance, _screenwidth / 2 * Var.MovementDistance));
                         } while
                             //Make sure it's inside the monitor
                             (
                             0 > _windowcurrentpos.Left + _newwindowmovement.Left ||
                             0 > _windowcurrentpos.Top + _newwindowmovement.Top ||
-                            Screen.PrimaryScreen.Bounds.Width - Var.WindowSizeX < _windowcurrentpos.Left + _newwindowmovement.Left ||
-                            Screen.PrimaryScreen.Bounds.Height - Var.WindowSizeY < _windowcurrentpos.Top + _newwindowmovement.Top
+                            _screenwidth - Var.WindowSizeX < _windowcurrentpos.Left + _newwindowmovement.Left ||
+                            _screenheight - Var.WindowSizeY < _windowcurrentpos.Top + _newwindowmovement.Top
                             );
 
                         //do the magic
-                        int _sleeptime = 30;
+                        int _sleeptime = Var.SleepDuringRandomMoves;
                         FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
                         //
 
                         //WE DID IT!
                         Var.SecondsSpentBeforeNextMovement = 0;
+                        //Turn around?
+                        if (Var.TurnTowardsCenter)
+                        {
+                            if ((_windowcurrentpos.Left + _newwindowmovement.Left > _screenwidth / 2) && Var.LookingRightWay)
+                                Var.TurnAroundState = 1;
+                            else if ((_windowcurrentpos.Left + _newwindowmovement.Left < _screenwidth / 2) && !Var.LookingRightWay)
+                                Var.TurnAroundState = 1;
+                        }
                     }
                     //this isn't the end yet
                     Var.SecondsSpentBeforeNextMovement++;
