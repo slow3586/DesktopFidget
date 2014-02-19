@@ -2,32 +2,8 @@
 A (kind of small but I'm not sure) project on C# made in Visual Studio 12. Using graphics functions the program cuts out frames out of an image file and then draws them together, resulting in a complete image, as demonstrated here:
 http://youtu.be/Tle-syKSwUw (new video)
 
-##Features (so far):
-All the existing animation frames are actually used;
-
-Random head movements;
-
-Random floating movements in the vicinity;
-
-Random movements across the monitor (with decent customization);
-
-Settings file (saving\loading);
-
-Follow the mouse function;
-
-Turn around function;
-
-Left click relocation;
-
-Click through function;
-
-Shadow function;
-
-Size customization;
-
 ##Where to download:
-Click the "(num) Release" button at the top of the list of files.
-(https://github.com/slow3586/DesktopFidget/releases)
+https://github.com/slow3586/DesktopFidget/releases
 
 ##How to use:
 Check the notification icons area and find the program's icon; right click it and you will find the settings menu.
