@@ -51,6 +51,7 @@
             this.AnimationsFrequencyLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.AnimationsFrequencyTB = new System.Windows.Forms.TrackBar();
+            this.ShadowCB = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -173,7 +174,7 @@
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.SizeLevelTB);
             this.groupBox4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.groupBox4.Location = new System.Drawing.Point(12, 263);
+            this.groupBox4.Location = new System.Drawing.Point(12, 288);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(535, 82);
             this.groupBox4.TabIndex = 5;
@@ -249,9 +250,9 @@
             this.TurnTowardsCenterCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TurnTowardsCenterCB.Location = new System.Drawing.Point(12, 238);
             this.TurnTowardsCenterCB.Name = "TurnTowardsCenterCB";
-            this.TurnTowardsCenterCB.Size = new System.Drawing.Size(223, 19);
+            this.TurnTowardsCenterCB.Size = new System.Drawing.Size(335, 19);
             this.TurnTowardsCenterCB.TabIndex = 9;
-            this.TurnTowardsCenterCB.Text = "Always turn towards center of screen";
+            this.TurnTowardsCenterCB.Text = "Turn towards center of screen (after random movements)";
             this.TurnTowardsCenterCB.UseVisualStyleBackColor = true;
             this.TurnTowardsCenterCB.CheckedChanged += new System.EventHandler(this.TurnTowardsCenterCB_CheckedChanged);
             // 
@@ -261,7 +262,7 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.AnimationsFrequencyTB);
             this.groupBox3.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.groupBox3.Location = new System.Drawing.Point(12, 351);
+            this.groupBox3.Location = new System.Drawing.Point(12, 376);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(535, 82);
             this.groupBox3.TabIndex = 6;
@@ -303,12 +304,25 @@
             this.AnimationsFrequencyTB.Value = 50;
             this.AnimationsFrequencyTB.ValueChanged += new System.EventHandler(this.AnimationsFrequencyTB_ValueChanged);
             // 
+            // ShadowCB
+            // 
+            this.ShadowCB.AutoSize = true;
+            this.ShadowCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ShadowCB.Location = new System.Drawing.Point(12, 263);
+            this.ShadowCB.Name = "ShadowCB";
+            this.ShadowCB.Size = new System.Drawing.Size(71, 19);
+            this.ShadowCB.TabIndex = 10;
+            this.ShadowCB.Text = "Shadow";
+            this.ShadowCB.UseVisualStyleBackColor = true;
+            this.ShadowCB.CheckedChanged += new System.EventHandler(this.ShadowCB_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(556, 444);
+            this.ClientSize = new System.Drawing.Size(555, 466);
+            this.Controls.Add(this.ShadowCB);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.TurnTowardsCenterCB);
             this.Controls.Add(this.SaveSettingsButton);
@@ -365,5 +379,6 @@
         private System.Windows.Forms.Label AnimationsFrequencyLabel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar AnimationsFrequencyTB;
+        private System.Windows.Forms.CheckBox ShadowCB;
     }
 }

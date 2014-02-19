@@ -40,6 +40,9 @@ namespace DesktopFidget
 
             if (Var.TurnTowardsCenter == true)
                 TurnTowardsCenterCB.CheckState = CheckState.Checked;
+
+            if (Var.Shadow == true)
+                ShadowCB.CheckState = CheckState.Checked;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -110,6 +113,11 @@ namespace DesktopFidget
                 AnimationsFrequencyLabel.Text = "NVR!";
                 Var.AnimationsFrequency = 100000;
             }
+        }
+
+        private void ShadowCB_CheckedChanged(object sender, EventArgs e)
+        {
+            Var.Shadow = ShadowCB.Checked;  
         }
     }
 }

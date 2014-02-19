@@ -1,5 +1,5 @@
 #DesktopFidget
-A (not so small anymore) project on C# made in Visual Studio 12. Using graphics functions the program cuts out frames out of an image file and then draws them together, resulting in a complete image, as demonstrated here:
+A (kind of small but I'm not sure) project on C# made in Visual Studio 12. Using graphics functions the program cuts out frames out of an image file and then draws them together, resulting in a complete image, as demonstrated here:
 http://youtu.be/Tle-syKSwUw (new video)
 
 ##Features (so far):
@@ -21,6 +21,8 @@ Left click relocation;
 
 Click through function;
 
+Shadow function;
+
 Size customization;
 
 ##Where to download:
@@ -41,6 +43,11 @@ Double click left mouse button: Cast magic
 Click right mouse button: Switch side
 
 ##Changelog:
+#####2.1.2.2
+Shadow option;
+
+'Follow the mouse' completely remade;
+
 #####2.1.1.2
 'Always turn towards center of screen' function;
 

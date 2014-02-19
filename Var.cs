@@ -46,6 +46,7 @@ namespace DesktopFidget
         public static int RightWingState = 8;
         public static int HeightBonus = 0;
         public static int WidthBonus = 0;
+        public static int ZBonus = 0;
         public static int WingSideSwitchBonus = 0;
         public static int NeedTBS1 = 0;
         public static int NeedTBS2 = 0;
@@ -53,6 +54,7 @@ namespace DesktopFidget
         public static int TurnAroundState = 0;
         public static double AngleHeightFlight = 0;
         public static double AngleWidthFlight = 0;
+        public static double AngleZFlight = 0;
         public static Image LeftWingImage;
         public static Image RightWingImage;
         public static Image UpperBodyImage;
@@ -76,11 +78,13 @@ namespace DesktopFidget
         public static int WindowStartingY = 45;
         public static int HeightBonusMultiplier = 15;
         public static int WidthBonusMultiplier = 20;
+        public static int ZBonusMultiplier = 5;
         public static int HeightBonusIncreaseMultiplier = 150;
         public static int WidthBonusIncreaseMultiplier = 250;
+        public static int ZBonusIncreaseMultiplier = 1000;
         public static int FlightSpeedMultiplier = 500;
 
-        public static int ProgramVersion = 2112;
+        public static int ProgramVersion = 2122;
         public static string WINDOW_NAME = "Desktop Fidget";
         public static bool ClickThroughWindow = false;
         public static bool FollowTheMouse = false;
@@ -93,5 +97,6 @@ namespace DesktopFidget
         public static int SizeLevel = 4;
         public static int SecondsSpentBeforeNextMovement = 0;
         public static bool IniFileWasLoaded = false;
+        public static bool Shadow = false;
     }
 }

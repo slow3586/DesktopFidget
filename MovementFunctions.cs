@@ -27,12 +27,16 @@ namespace DesktopFidget
             {
                 Var.HeightBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(Var.AngleHeightFlight) * Var.HeightBonusMultiplier));
                 Var.WidthBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(Var.AngleWidthFlight) * Var.WidthBonusMultiplier));
+                Var.ZBonus = Convert.ToInt32(Math.Ceiling(Math.Cos(Var.AngleWidthFlight) * Var.ZBonusMultiplier) + Var.ZBonusMultiplier *2);
                 Var.AngleHeightFlight = Var.AngleHeightFlight + Math.PI / Var.HeightBonusIncreaseMultiplier;
                 Var.AngleWidthFlight = Var.AngleWidthFlight + Math.PI / Var.WidthBonusIncreaseMultiplier;
+                Var.AngleZFlight = Var.AngleZFlight + Math.PI / Var.ZBonusIncreaseMultiplier;
                 if (Var.AngleHeightFlight > 2 * Math.PI) { Var.AngleHeightFlight = 0; }
                 if (Var.AngleWidthFlight > 2 * Math.PI) { Var.AngleWidthFlight = 0; }
+                if (Var.AngleZFlight > 2 * Math.PI) { Var.AngleZFlight = 0; }
                 if (Var.AngleHeightFlight < 0) { Var.AngleHeightFlight = Math.PI * 2; }
                 if (Var.AngleWidthFlight < 0) { Var.AngleWidthFlight = Math.PI * 2; }
+                if (Var.AngleZFlight < 0) { Var.AngleZFlight = Math.PI * 2; }
                 Thread.Sleep(25);
             }
         }
@@ -86,17 +90,26 @@ namespace DesktopFidget
             Var.SecondsToNextMovement = Convert.ToInt32(_rnd.Next(Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency, (Var.MOVEMENT_TIME_MODIFIER - Var.MovementFrequency) * 2));
             while (true)
             {
-                if (Var.FollowTheMouse && Var.MovementDistance == 0)
+                //mouse follow
+                while (Var.FollowTheMouse && Var.MovementDistance == 0)
                 {
-                    //DebugLabel.Visible = true;
                     //FIND THE TARGET
                     NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
-                    _newwindowmovement.Left = Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X + _rnd.Next(-10,10);
-                    _newwindowmovement.Top = Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y + _rnd.Next(-10, 10);
-                    int _sleeptime = Var.SleepDuringMouseFollow;
-                    FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
+                    if ((Var.LookingRightWay == true && Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X < 0) || (Var.LookingRightWay == false && Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X > 0))
+                    { Var.TurnAroundState = 1; }
+                    _newwindowmovement.Left = _windowcurrentpos.Left + Convert.ToInt32(((Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X) * 0.01));
+                    _newwindowmovement.Top = _windowcurrentpos.Top + Convert.ToInt32(((Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y) * 0.01));
+                    int _distancesqr = Convert.ToInt32(Math.Floor(Math.Sqrt(Math.Pow((Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X), 2) + Math.Pow((Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y), 2))));
+                    int _wsleep = Var.WingsSleepParameterDefault - _distancesqr / 50;
+                    if (_wsleep < 20) { _wsleep = 20; }
+                    Var.WingsSleepParameter = _wsleep;
+                    NativeMethods.MoveWindow(_window,
+                    _newwindowmovement.Left,
+                    _newwindowmovement.Top,
+                    Var.WindowSizeX, Var.WindowSizeY, true);
+                    Thread.Sleep(25);
                 }
-                //THIS ONE IS RESPONSIBLE FOR COMPLETELY RANDOM MOVEMENTS
+                //random moves
                 if (Var.MovementDistance != 0 && !Var.FollowTheMouse)
                 {
                     if (Var.SecondsSpentBeforeNextMovement > Var.SecondsToNextMovement)

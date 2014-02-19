@@ -20,11 +20,12 @@ namespace DesktopFidget
         public GraphicsForm()
         {
             InitializeComponent();
-            //Load up setttings if INI file exists or create it if there's none
+
+            //Load INI
             IniFile.OpenSettingsFile(true, false);
-            //Define the form
+            
+            //Rename window
             Var.GraphicsFormInstance = this;
-            //Make sure there are no multiple instances of the program with the same name
             int _c=0;
             IntPtr _window;
             do
@@ -38,9 +39,9 @@ namespace DesktopFidget
             while (_window != IntPtr.Zero);
                 Var.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
                 this.Text = Var.WINDOW_NAME;
-            //
-            this.DoubleBuffered = true; //Removing flickering.
-            //Cut out frames
+            this.DoubleBuffered = true;
+
+            //Cut frames
             for (int _b=0; _b<6; _b++)
             {
                 if (_b != 1)
@@ -51,28 +52,34 @@ namespace DesktopFidget
                     }
                 }
             }
+            
             //Starting loop threads responsible for changing images for each part
             //of the body.
             Thread threadlbil = new Thread(new ThreadStart(ImageLoops.LowerBodyImageLoop));
+            threadlbil.Name = "Lower Body Image Loop";
             threadlbil.IsBackground = true;
             threadlbil.Start();
             Thread threadtbil = new Thread(new ThreadStart(ImageLoops.UpperBodyImageLoop));
+            threadtbil.Name = "Upper Body Image Loop";
             threadtbil.IsBackground = true;
             threadtbil.Start();
             Thread threadwil = new Thread(new ThreadStart(ImageLoops.WingsImageLoop));
+            threadwil.Name = "Wings Image Loop";
             threadwil.IsBackground = true;
             threadwil.Start();
             Thread threadhcl = new Thread(new ThreadStart(MovementFunctions.HeightCalcLoop));
+            threadhcl.Name = "Height Calculation Loop";
             threadhcl.IsBackground = true;
             threadhcl.Start();
-            Thread threadfm = new Thread(new ThreadStart( MovementFunctions.FidgetsMind ));
+            Thread threadfm = new Thread(new ThreadStart( MovementFunctions.FidgetsMind));
+            threadfm.Name = "Random Movements Functions";
             threadfm.IsBackground = true;
             threadfm.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //When the form loads this removes the window borders.
+            //Remove borders
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             if (!Var.DebugMode) { NativeMethods.SetWindowLong(_window, Var.GWL_STYLE, Var.WS_SYSMENU); }
             if (Var.ClickThroughWindow)
@@ -86,7 +93,6 @@ namespace DesktopFidget
             }
             NativeMethods.MoveWindow(_window, Var.WindowStartingX, Var.WindowStartingY, Var.WindowSizeX, Var.WindowSizeY,true);
             NativeMethods.DrawMenuBar(_window);
-
         }
 
         private Bitmap SliceMainFrame(int _a, int _b)
@@ -114,8 +120,6 @@ namespace DesktopFidget
 
        public static void RefreshTheForm()
         {
-            //Quick function to make things more readable. Refresh the
-            //form so the changes are visible.
             if (Var.GraphicsFormInstance.IsHandleCreated)
             {
                 Var.GraphicsFormInstance.Invoke((MethodInvoker)delegate
@@ -127,9 +131,6 @@ namespace DesktopFidget
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-                //Check if the image actually exists,
-                //then draw the image using magical numbers and taking
-                //numbers responsible for flying into account.
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
@@ -144,10 +145,63 @@ namespace DesktopFidget
                 e.Graphics.ScaleTransform(1F * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
             }
 
-            //debug stuff
-            //DebugLabel.Visible = true;
-            //DebugLabel.Text = Convert.ToString(Var.ClickThroughWindow);
+            //SHADOWS
+            if (Var.Shadow)
+            {
+                ColorMatrix cm = new ColorMatrix();
+                cm.Matrix22 = 0.0f;
+                cm.Matrix00 = 0.0f;
+                cm.Matrix11 = 0.0f;
+                ImageAttributes ia = new ImageAttributes();
+                ia.SetColorMatrix(cm);
+                Rectangle _rect64 = new Rectangle(0, 0, 64, 64);
+                Rectangle _rect128 = new Rectangle(0, 0, 64, 128);
+                if (Var.TailImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(79 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
+                    new Point(143 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
+                    new Point(63 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 138 + Var.HeightBonus + Var.ZBonus / 2)};
+                    e.Graphics.DrawImage(Var.TailImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
+                }
 
+                if (Var.RightWingImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(110 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
+                    new Point(174 - Var.ZBonus + Var.WidthBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
+                    new Point(110 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 145 + Var.HeightBonus + Var.ZBonus / 2)};
+                    e.Graphics.DrawImage(Var.RightWingImage, _destinationPoints, _rect128, GraphicsUnit.Pixel, ia);
+                }
+                if (Var.LowerBodyImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus, Var.LOWER_BODY_Y + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
+                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus + 64, Var.LOWER_BODY_Y + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
+                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus, Var.LOWER_BODY_Y + Var.HeightBonus + 64 + Var.ZBonus / 2)};
+                    e.Graphics.DrawImage(Var.LowerBodyImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
+                }
+
+                if (Var.LeftWingImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(55 - Var.ZBonus + Var.WidthBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
+                    new Point(119 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
+                    new Point(55 - Var.ZBonus + Var.WidthBonus, 145 + Var.HeightBonus + Var.ZBonus / 2)};
+                    e.Graphics.DrawImage(Var.LeftWingImage, _destinationPoints, _rect128, GraphicsUnit.Pixel, ia);
+                }
+
+                if (Var.UpperBodyImage != null)
+                {
+                    Point[] _destinationPoints = {
+                    new Point(75 - Var.ZBonus + Var.WidthBonus, 25 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
+                    new Point(75 - Var.ZBonus + Var.WidthBonus + 64, 25 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
+                    new Point(75 - Var.ZBonus + Var.WidthBonus, 25 + Var.HeightBonus + 64 + Var.ZBonus / 2)};
+                    e.Graphics.DrawImage(Var.UpperBodyImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
+                }
+            }
+
+                //FRONT
                  if (Var.TailImage != null)
                  {
                      Point[] _destinationPoints = {
@@ -177,9 +231,6 @@ namespace DesktopFidget
                     e.Graphics.DrawImage(Var.LeftWingImage, _destinationPoints);
                 } 
 
-                if (Var.LeftWingImage != null) 
-                { e.Graphics.DrawImage(Var.LeftWingImage, new Point(55 + Var.WidthBonus, 17 + Var.HeightBonus)); }
-
                 if (Var.UpperBodyImage != null)
                 { e.Graphics.DrawImage(Var.UpperBodyImage, new Point(75 + Var.WidthBonus, 25 + Var.HeightBonus)); }
         }
@@ -197,6 +248,8 @@ namespace DesktopFidget
                     //When the mouse button goes down start listening to mouse movements.
                     Var.LeftMouseButtonDown = true;
                     Thread threadwil = new Thread(new ThreadStart(MoveWindowFunction));
+                    threadwil.Name = "Manual Mouse Window Movement Function";
+                    threadwil.IsBackground = true;
                     threadwil.Start();
                 }
             }
@@ -260,6 +313,7 @@ namespace DesktopFidget
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Thread threadform2 = new Thread(new ThreadStart(OpenForm2));
+            threadform2.Name = "Settings Menu Form";
             threadform2.IsBackground = true;
             threadform2.Start();
         }
