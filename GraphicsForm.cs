@@ -311,7 +311,9 @@ namespace DesktopFidget
             int _ydif = Cursor.Position.Y -this.Location.Y;
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             Random _rnd = new Random();
-            Dialogs.setDialog(_rnd.Next(16) + 101,0);
+            if (Var.AllowDialogs)
+                Dialogs.setDialog(_rnd.Next(16) + 101, 0);
+
             while(Var.LeftMouseButtonDown)
             {
                 Thread.Sleep(40);
@@ -330,8 +332,11 @@ namespace DesktopFidget
                 else if ((_windowcurrentpos.Left + Var.LOWER_BODY_X < _screenwidth / 2) && !Var.LookingRightWay)
                     Var.TurnAroundState = 1;
             }
-            Dialogs.refreshForm(0);
-            Dialogs.clearDialog();
+            if (Var.AllowDialogs)
+            {
+                Dialogs.refreshForm(0);
+                Dialogs.clearDialog();
+            }
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
