@@ -18,7 +18,16 @@ Double click left mouse button: Cast magic
 
 Click right mouse button: Switch side
 
+####Dialogs:
+Dialogs can be extracted by clicking the "Ext Dialogs" buttons in the settings menu. They will be saved in a "fdialogs.txt" file. You can edit them and add your own up to 200 max.
+If there's a dialogs file it will be loaded and will overwrite the existing ones. Note that dialogs from line 101 to 116 are used for mouse clicks.
+
 ##Changelog:
+#####2.2.1.2
+Dialogs implemented;
+
+Head animations tweaked;
+
 #####2.1.2.2
 Shadow option;
 

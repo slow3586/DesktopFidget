@@ -19,6 +19,7 @@ namespace DesktopFidget
             InitializeComponent();
 
             VersionLabel.Text = 'v' + Convert.ToString(Var.ProgramVersion);
+            ModsLabel.Text = Var.Mods;
             MovingDistanceTB.Value = Var.MovementDistance;
             MovingFrequencyTB.Value = Var.MovementFrequency;
             SizeLevelTB.Value = Var.SizeLevel;
@@ -26,6 +27,11 @@ namespace DesktopFidget
                 AnimationsFrequencyTB.Value = 255;
             else
                 AnimationsFrequencyTB.Value = Var.AnimationsFrequency;
+
+            if (Var.DialogsFrequency > 255)
+                DialogsFrequencyTB.Value = 255;
+            else
+                DialogsFrequencyTB.Value = Var.DialogsFrequency;
 
             if (Var.FollowTheMouse)
                 FollowTheMouseCB.CheckState = CheckState.Checked;
@@ -43,6 +49,11 @@ namespace DesktopFidget
 
             if (Var.Shadow == true)
                 ShadowCB.CheckState = CheckState.Checked;
+
+            if (Var.AllowDialogs == true)
+                DialogsCB.CheckState = CheckState.Checked;
+
+            groupBox5.Visible = Var.AllowDialogs ? true : false;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -118,6 +129,30 @@ namespace DesktopFidget
         private void ShadowCB_CheckedChanged(object sender, EventArgs e)
         {
             Var.Shadow = ShadowCB.Checked;  
+        }
+
+        private void ExportFilesButton_Click(object sender, EventArgs e)
+        {
+            Dialogs.printDialogs();
+        }
+
+        private void DialogsCB_CheckedChanged(object sender, EventArgs e)
+        {
+            Var.AllowDialogs = DialogsCB.Checked;
+            groupBox5.Visible = Var.AllowDialogs ? true : false;
+        }
+
+        private void DialogsFrequencyTB_ValueChanged(object sender, EventArgs e)
+        {
+            DialogsFrequencyL.Text = Convert.ToString(DialogsFrequencyTB.Value) + '%';
+            Var.DialogsFrequency = DialogsFrequencyTB.Value;
+            if (DialogsFrequencyTB.Value == 255)
+            {
+                DialogsFrequencyL.Text = "NVR!";
+                Var.DialogsFrequency = 100000;
+            }
+            Random _rnd = new Random();
+            Var.SecondsBeforeNextDialog = _rnd.Next(60 * Var.DialogsFrequency/100, 75 * Var.DialogsFrequency/100);
         }
     }
 }

@@ -77,10 +77,12 @@ namespace DesktopFidget
                     Var.FollowTheMouse = bool.Parse(inifile.IniReadValue("Common", "FollowTheMouse"));
                     Var.TurnTowardsCenter = bool.Parse(inifile.IniReadValue("Common", "TurnTowardsCenter"));
                     Var.Shadow = bool.Parse(inifile.IniReadValue("Common", "Shadow"));
+                    Var.AllowDialogs = bool.Parse(inifile.IniReadValue("Common", "Dialogs"));
                     Var.MovementDistance = Convert.ToInt32(inifile.IniReadValue("Common", "MovementDistance"));
                     Var.MovementFrequency = Convert.ToInt32(inifile.IniReadValue("Common", "MovementFrequency"));
                     Var.AnimationsFrequency = Convert.ToInt32(inifile.IniReadValue("Common", "AnimationsFrequency"));
                     Var.SizeLevel = Convert.ToInt32(inifile.IniReadValue("Common", "SizeLevel"));
+                    Var.DialogsFrequency = Convert.ToInt32(inifile.IniReadValue("Common", "DialogsFrequency"));
                     Var.WindowStartingX = Convert.ToInt32(inifile.IniReadValue("Advanced", "WindowStartingX"));
                     Var.WindowStartingY = Convert.ToInt32(inifile.IniReadValue("Advanced", "WindowStartingY"));
                     Var.DebugMode = bool.Parse(inifile.IniReadValue("Advanced", "DebugMode"));
@@ -115,6 +117,8 @@ namespace DesktopFidget
                     inifile.IniWriteValue("Common", "AnimationsFrequency", Convert.ToString(Var.AnimationsFrequency));
                     inifile.IniWriteValue("Common", "SizeLevel", Convert.ToString(Var.SizeLevel));
                     inifile.IniWriteValue("Common", "Shadow", Convert.ToString(Var.Shadow));
+                    inifile.IniWriteValue("Common", "Dialogs", Convert.ToString(Var.AllowDialogs));
+                    inifile.IniWriteValue("Common", "DialogsFrequency", Convert.ToString(Var.DialogsFrequency));
                     inifile.IniWriteValue("Advanced", "WindowStartingX", Convert.ToString(Var.WindowStartingX));
                     inifile.IniWriteValue("Advanced", "WindowStartingY", Convert.ToString(Var.WindowStartingY));
                     inifile.IniWriteValue("Advanced", "DebugMode", Convert.ToString(Var.DebugMode));

@@ -43,7 +43,7 @@ namespace DesktopFidget
                 if (Var.TurnAroundState == 0)
                     Thread.Sleep(_sleeptime);
                 else
-                    Thread.Sleep(0);
+                    return;
             }
         }
 
@@ -56,7 +56,22 @@ namespace DesktopFidget
                 if (Var.TurnAroundState == 0)
                     Thread.Sleep(_sleeptime);
                 else
-                    Thread.Sleep(0);
+                    return;
+            }
+        }
+
+        public static void ContinuousSleep(int _length)
+        {
+            _length = _length / 50;
+            for (int _z = 0; _z < _length; _z++)
+            {
+                if (Var.TurnAroundState == 0)
+                {
+                    Thread.Sleep(50);
+                    _z++;
+                }
+                else
+                    _z = _length;
             }
         }
 
@@ -113,7 +128,7 @@ namespace DesktopFidget
                     GoThroughFramesReverse(25, 21, 60);
                     Var.UpperBodyImage = Var.CutFrame[16];
                     //Wait some time in this state before going back to normal.
-                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 2000)));
+                    ContinuousSleep(_rnd.Next(700,2000));
                     GoThroughFrames(23, 25, 100);
                     Var.UpperBodyState1 = 0;
                     Var.NeedTBS1 = Convert.ToInt32(_rnd.Next(6 * Var.AnimationsFrequency / 100, 10 * Var.AnimationsFrequency / 100));
@@ -127,7 +142,10 @@ namespace DesktopFidget
                     {
                         Var.UpperBodyImage = Var.CutFrame[_a];
                         GraphicsForm.RefreshTheForm();
-                        if (_a == 16 || _a == 21) { Thread.Sleep(Convert.ToInt32(_rnd.Next(500, 2000))); }
+                        if (_a == 16 || _a == 21) 
+                        {
+                            ContinuousSleep(_rnd.Next(700, 2000));
+                        }
                         else
                         {
                             if (Var.TurnAroundState == 0)
@@ -146,7 +164,7 @@ namespace DesktopFidget
                 {
                     GoThroughFrames(18, 21, 60);
                     Var.UpperBodyImage = Var.CutFrame[21];
-                    Thread.Sleep(Convert.ToInt32(_rnd.Next(700, 2000)));
+                    ContinuousSleep(_rnd.Next(700, 2000));
                     GoThroughFramesReverse(21, 17, 60);
                     Var.UpperBodyState3 = 0;
                     Var.NeedTBS3 = Convert.ToInt32(_rnd.Next(6 * Var.AnimationsFrequency / 100, 10 * Var.AnimationsFrequency / 100));

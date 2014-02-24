@@ -52,6 +52,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.AnimationsFrequencyTB = new System.Windows.Forms.TrackBar();
             this.ShadowCB = new System.Windows.Forms.CheckBox();
+            this.ExportFilesButton = new System.Windows.Forms.Button();
+            this.ModsLabel = new System.Windows.Forms.Label();
+            this.DialogsCB = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.DialogsFrequencyL = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.DialogsFrequencyTB = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MovingDistanceTB)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -60,6 +67,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.SizeLevelTB)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationsFrequencyTB)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DialogsFrequencyTB)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -174,7 +183,7 @@
             this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.SizeLevelTB);
             this.groupBox4.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.groupBox4.Location = new System.Drawing.Point(12, 288);
+            this.groupBox4.Location = new System.Drawing.Point(12, 313);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(535, 82);
             this.groupBox4.TabIndex = 5;
@@ -228,7 +237,7 @@
             // VersionLabel
             // 
             this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(510, 222);
+            this.VersionLabel.Location = new System.Drawing.Point(515, 219);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(13, 13);
             this.VersionLabel.TabIndex = 7;
@@ -262,7 +271,7 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.AnimationsFrequencyTB);
             this.groupBox3.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.groupBox3.Location = new System.Drawing.Point(12, 376);
+            this.groupBox3.Location = new System.Drawing.Point(12, 401);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(535, 82);
             this.groupBox3.TabIndex = 6;
@@ -316,12 +325,99 @@
             this.ShadowCB.UseVisualStyleBackColor = true;
             this.ShadowCB.CheckedChanged += new System.EventHandler(this.ShadowCB_CheckedChanged);
             // 
+            // ExportFilesButton
+            // 
+            this.ExportFilesButton.Location = new System.Drawing.Point(472, 238);
+            this.ExportFilesButton.Name = "ExportFilesButton";
+            this.ExportFilesButton.Size = new System.Drawing.Size(75, 23);
+            this.ExportFilesButton.TabIndex = 11;
+            this.ExportFilesButton.Text = "Exp. Dialogs";
+            this.ExportFilesButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ExportFilesButton.UseVisualStyleBackColor = true;
+            this.ExportFilesButton.Click += new System.EventHandler(this.ExportFilesButton_Click);
+            // 
+            // ModsLabel
+            // 
+            this.ModsLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ModsLabel.AutoSize = true;
+            this.ModsLabel.Location = new System.Drawing.Point(393, 327);
+            this.ModsLabel.Name = "ModsLabel";
+            this.ModsLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.ModsLabel.Size = new System.Drawing.Size(10, 13);
+            this.ModsLabel.TabIndex = 12;
+            this.ModsLabel.Text = "-";
+            this.ModsLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // DialogsCB
+            // 
+            this.DialogsCB.AutoSize = true;
+            this.DialogsCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DialogsCB.Location = new System.Drawing.Point(12, 288);
+            this.DialogsCB.Name = "DialogsCB";
+            this.DialogsCB.Size = new System.Drawing.Size(68, 19);
+            this.DialogsCB.TabIndex = 13;
+            this.DialogsCB.Text = "Dialogs";
+            this.DialogsCB.UseVisualStyleBackColor = true;
+            this.DialogsCB.CheckedChanged += new System.EventHandler(this.DialogsCB_CheckedChanged);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.DialogsFrequencyL);
+            this.groupBox5.Controls.Add(this.label5);
+            this.groupBox5.Controls.Add(this.DialogsFrequencyTB);
+            this.groupBox5.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.groupBox5.Location = new System.Drawing.Point(12, 489);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(535, 82);
+            this.groupBox5.TabIndex = 7;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Dialogs frequency";
+            // 
+            // DialogsFrequencyL
+            // 
+            this.DialogsFrequencyL.AutoSize = true;
+            this.DialogsFrequencyL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.DialogsFrequencyL.Location = new System.Drawing.Point(490, 19);
+            this.DialogsFrequencyL.Name = "DialogsFrequencyL";
+            this.DialogsFrequencyL.Size = new System.Drawing.Size(15, 16);
+            this.DialogsFrequencyL.TabIndex = 3;
+            this.DialogsFrequencyL.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(16, 59);
+            this.label5.Name = "label5";
+            this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label5.Size = new System.Drawing.Size(441, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Defines how ofter dialogs will occur. Default is 60 -75 seconds. Click dialogs le" +
+    "ft unchanged.";
+            // 
+            // DialogsFrequencyTB
+            // 
+            this.DialogsFrequencyTB.LargeChange = 25;
+            this.DialogsFrequencyTB.Location = new System.Drawing.Point(7, 19);
+            this.DialogsFrequencyTB.Maximum = 230;
+            this.DialogsFrequencyTB.Minimum = 25;
+            this.DialogsFrequencyTB.Name = "DialogsFrequencyTB";
+            this.DialogsFrequencyTB.Size = new System.Drawing.Size(465, 45);
+            this.DialogsFrequencyTB.SmallChange = 5;
+            this.DialogsFrequencyTB.TabIndex = 0;
+            this.DialogsFrequencyTB.TickFrequency = 5;
+            this.DialogsFrequencyTB.Value = 50;
+            this.DialogsFrequencyTB.ValueChanged += new System.EventHandler(this.DialogsFrequencyTB_ValueChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(555, 466);
+            this.ClientSize = new System.Drawing.Size(555, 583);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.DialogsCB);
+            this.Controls.Add(this.ModsLabel);
+            this.Controls.Add(this.ExportFilesButton);
             this.Controls.Add(this.ShadowCB);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.TurnTowardsCenterCB);
@@ -350,6 +446,9 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimationsFrequencyTB)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DialogsFrequencyTB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -380,5 +479,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TrackBar AnimationsFrequencyTB;
         private System.Windows.Forms.CheckBox ShadowCB;
+        private System.Windows.Forms.Button ExportFilesButton;
+        private System.Windows.Forms.Label ModsLabel;
+        private System.Windows.Forms.CheckBox DialogsCB;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label DialogsFrequencyL;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar DialogsFrequencyTB;
     }
 }

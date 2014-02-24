@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -23,7 +24,11 @@ namespace DesktopFidget
 
             //Load INI
             IniFile.OpenSettingsFile(true, false);
-            
+            //Load dialogs
+            if (Dialogs.readDialogs())
+            {
+                Var.Mods = Var.Mods + "Custom dialogs loaded.";
+            }
             //Rename window
             Var.GraphicsFormInstance = this;
             int _c=0;
@@ -75,6 +80,10 @@ namespace DesktopFidget
             threadfm.Name = "Random Movements Functions";
             threadfm.IsBackground = true;
             threadfm.Start();
+            Thread threaddialogs = new Thread(new ThreadStart(Dialogs.dialogTick));
+            threaddialogs.Name = "Dialogs Loop";
+            threaddialogs.IsBackground = true;
+            threaddialogs.Start();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -233,6 +242,44 @@ namespace DesktopFidget
 
                 if (Var.UpperBodyImage != null)
                 { e.Graphics.DrawImage(Var.UpperBodyImage, new Point(75 + Var.WidthBonus, 25 + Var.HeightBonus)); }
+
+                //DIALOG
+               if (Var.DialogToDraw != null)
+               {
+                   int _tempWidthBonus = Var.WidthBonus;
+                   if (!Var.LookingRightWay)
+                   {
+                       e.Graphics.TranslateTransform(220 * Var.SizeLevel / 4, 0);
+                       e.Graphics.ScaleTransform(-1 * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+                       _tempWidthBonus = -_tempWidthBonus;
+                   }
+                   else
+                   {
+                       e.Graphics.ScaleTransform(1F * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+                   }
+
+                    Rectangle _rect = new Rectangle
+                    (Var.LOWER_BODY_X + 75 + _tempWidthBonus, Var.LOWER_BODY_Y - 33 + Var.HeightBonus
+                    ,20 + Convert.ToInt16(9.5*Var.DialogToDraw.Length),Var.LOWER_BODY_Y - 43);
+                    Rectangle _rectpie = new Rectangle
+                    (Var.LOWER_BODY_X + 25 + _tempWidthBonus, Var.LOWER_BODY_Y - 40 + Var.HeightBonus
+                    , Var.LOWER_BODY_X + 21, Var.LOWER_BODY_Y - 36);
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 2), _rect);
+                    e.Graphics.DrawPie(new Pen(Color.Black, 2), _rectpie, 90.0F, 45.0F);
+                    e.Graphics.FillRectangle(Brushes.White, _rect);
+                    e.Graphics.FillPie(Brushes.White, _rectpie, 90.0F, 45.0F);
+
+
+                    GraphicsPath _gp = new GraphicsPath();
+                    GraphicsPath _gpshadow = new GraphicsPath();
+                    PointF _p = new PointF(Var.LOWER_BODY_X + 85 + _tempWidthBonus, Var.LOWER_BODY_Y - 31 + Var.HeightBonus);
+                    PointF _pshadow = new PointF(Var.LOWER_BODY_X + 84 + _tempWidthBonus, Var.LOWER_BODY_Y - 30 + Var.HeightBonus);
+                    _gp.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _p,StringFormat.GenericDefault);
+                    _gpshadow.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _pshadow, StringFormat.GenericDefault);
+                    e.Graphics.FillPath(Brushes.Black, _gpshadow);
+                    e.Graphics.DrawPath(new Pen(Color.White, 2), _gp);
+                    e.Graphics.FillPath(Brushes.Black, _gp);
+               }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -263,6 +310,8 @@ namespace DesktopFidget
             int _xdif = Cursor.Position.X -this.Location.X;
             int _ydif = Cursor.Position.Y -this.Location.Y;
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
+            Random _rnd = new Random();
+            Dialogs.setDialog(_rnd.Next(16) + 101,0);
             while(Var.LeftMouseButtonDown)
             {
                 Thread.Sleep(40);
@@ -281,6 +330,8 @@ namespace DesktopFidget
                 else if ((_windowcurrentpos.Left + Var.LOWER_BODY_X < _screenwidth / 2) && !Var.LookingRightWay)
                     Var.TurnAroundState = 1;
             }
+            Dialogs.refreshForm(0);
+            Dialogs.clearDialog();
         }
 
         private void Form1_MouseUp(object sender, MouseEventArgs e)
