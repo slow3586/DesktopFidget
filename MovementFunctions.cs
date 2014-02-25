@@ -96,17 +96,18 @@ namespace DesktopFidget
                     //FIND THE TARGET
                     NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
                     if ((Var.LookingRightWay == true && Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X < 0) || (Var.LookingRightWay == false && Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X > 0))
-                    { Var.TurnAroundState = 1; }
+                        { Var.TurnAroundState = 1; }
                     _newwindowmovement.Left = _windowcurrentpos.Left + Convert.ToInt32(((Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X) * 0.01));
                     _newwindowmovement.Top = _windowcurrentpos.Top + Convert.ToInt32(((Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y) * 0.01));
                     int _distancesqr = Convert.ToInt32(Math.Floor(Math.Sqrt(Math.Pow((Cursor.Position.X - _windowcurrentpos.Left - Var.LOWER_BODY_X), 2) + Math.Pow((Cursor.Position.Y - _windowcurrentpos.Top - Var.LOWER_BODY_Y), 2))));
                     int _wsleep = Var.WingsSleepParameterDefault - _distancesqr / 50;
-                    if (_wsleep < 20) { _wsleep = 20; }
+                    if (_wsleep < 20)
+                        { _wsleep = 20; }
                     Var.WingsSleepParameter = _wsleep;
                     NativeMethods.MoveWindow(_window,
-                    _newwindowmovement.Left,
-                    _newwindowmovement.Top,
-                    Var.WindowSizeX, Var.WindowSizeY, true);
+                        _newwindowmovement.Left,
+                        _newwindowmovement.Top,
+                        Var.WindowSizeX, Var.WindowSizeY, true);
                     Thread.Sleep(25);
                 }
                 //random moves
@@ -124,17 +125,16 @@ namespace DesktopFidget
                             _newwindowmovement.Left = Convert.ToInt32(_rnd.Next(-_screenwidth / 2 * Var.MovementDistance, _screenwidth / 2 * Var.MovementDistance));
                         } while
                             //Make sure it's inside the monitor
-                            (
+                        (
                             0 > _windowcurrentpos.Left + _newwindowmovement.Left ||
                             0 > _windowcurrentpos.Top + _newwindowmovement.Top ||
                             _screenwidth - Var.WindowSizeX < _windowcurrentpos.Left + _newwindowmovement.Left ||
                             _screenheight - Var.WindowSizeY < _windowcurrentpos.Top + _newwindowmovement.Top
-                            );
+                        );
 
                         //do the magic
                         int _sleeptime = Var.SleepDuringRandomMoves;
                         FlightMovement(_newwindowmovement, _windowcurrentpos, _sleeptime);
-                        //
 
                         //WE DID IT!
                         Var.SecondsSpentBeforeNextMovement = 0;

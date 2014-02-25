@@ -42,8 +42,9 @@ namespace DesktopFidget
                 }
             }
             while (_window != IntPtr.Zero);
-                Var.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
-                this.Text = Var.WINDOW_NAME;
+
+            Var.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
+            this.Text = Var.WINDOW_NAME;
             this.DoubleBuffered = true;
 
             //Cut frames
