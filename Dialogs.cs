@@ -195,21 +195,17 @@ namespace DesktopFidget
             NativeMethods.GetWindowRect(_window, ref _windowcurrentpos);
             if (_whattodo == 1)
             {
-                Var.WindowSizeX += Var.DialogToDraw.Length * 10 + Var.LOWER_BODY_X + 100;
+                    Var.WindowSizeX += Var.DialogToDraw.Length * 10 + Var.LOWER_BODY_X + 100;
             }
             else
             {
-                Var.WindowSizeX -= Var.DialogToDraw.Length * 10 + Var.LOWER_BODY_X + 100;
+                    Var.WindowSizeX -= Var.DialogToDraw.Length * 10 + Var.LOWER_BODY_X + 100;
+                    Var.DialogToDraw = null;
             }
             NativeMethods.MoveWindow(_window,
             _windowcurrentpos.Left,
             _windowcurrentpos.Top,
             Var.WindowSizeX, Var.WindowSizeY, true);
-        }
-
-        public static void clearDialog()
-        {
-            Var.DialogToDraw = null;
         }
 
         public static void setDialog(int _num, int _length)
@@ -219,8 +215,10 @@ namespace DesktopFidget
             if (_length > 0)
             {
                 Thread.Sleep(_length);
-                refreshForm(0);
-                clearDialog();
+                if (Var.DialogToDraw == Var.Dialogs[_num])
+                {
+                    refreshForm(0);
+                }
             }
         }
 
@@ -238,12 +236,13 @@ namespace DesktopFidget
             }
             Random _rnd = new Random();
             Var.SecondsBeforeNextDialog = _rnd.Next(60*Var.DialogsFrequency/100, 75*Var.DialogsFrequency/100);
+            if (Var.SecondsBeforeNextDialog < 10) Var.SecondsBeforeNextDialog = 10;
             while (true)
             {
                 if (Var.SecondsSpentBeforeNextDialog>Var.SecondsBeforeNextDialog && Var.AllowDialogs)
                 {
                     Var.SecondsSpentBeforeNextDialog = 0;
-                    setDialog(_rnd.Next(_realdialogslength), 8000);
+                    setDialog(_rnd.Next(116), 8000);
                 }
                 Var.SecondsSpentBeforeNextDialog++;
                 Thread.Sleep(1000);

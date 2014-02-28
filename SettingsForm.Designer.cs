@@ -294,10 +294,9 @@
             this.label4.Location = new System.Drawing.Point(16, 59);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label4.Size = new System.Drawing.Size(433, 13);
+            this.label4.Size = new System.Drawing.Size(282, 13);
             this.label4.TabIndex = 2;
-            this.label4.Text = "Defines how often random head animation will happen. Default is ~8 seconds for ea" +
-    "ch set.";
+            this.label4.Text = "Defines time between head animations. Less = more often.";
             // 
             // AnimationsFrequencyTB
             // 
@@ -389,10 +388,10 @@
             this.label5.Location = new System.Drawing.Point(16, 59);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(441, 13);
+            this.label5.Size = new System.Drawing.Size(442, 13);
             this.label5.TabIndex = 2;
-            this.label5.Text = "Defines how ofter dialogs will occur. Default is 60 -75 seconds. Click dialogs le" +
-    "ft unchanged.";
+            this.label5.Text = "Defines time between dialogs. Default is 60-75 seconds. Click dialogs will be lef" +
+    "t unchanged.";
             // 
             // DialogsFrequencyTB
             // 

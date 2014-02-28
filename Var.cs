@@ -84,7 +84,7 @@ namespace DesktopFidget
         public static int ZBonusIncreaseMultiplier = 1000;
         public static int FlightSpeedMultiplier = 500;
 
-        public static int ProgramVersion = 2212;
+        public static int ProgramVersion = 2222;
         public static string WINDOW_NAME = "Desktop Fidget";
         public static bool ClickThroughWindow = false;
         public static bool FollowTheMouse = false;

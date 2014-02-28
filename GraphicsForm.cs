@@ -275,8 +275,10 @@ namespace DesktopFidget
                     GraphicsPath _gpshadow = new GraphicsPath();
                     PointF _p = new PointF(Var.LOWER_BODY_X + 85 + _tempWidthBonus, Var.LOWER_BODY_Y - 31 + Var.HeightBonus);
                     PointF _pshadow = new PointF(Var.LOWER_BODY_X + 84 + _tempWidthBonus, Var.LOWER_BODY_Y - 30 + Var.HeightBonus);
-                    _gp.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _p,StringFormat.GenericDefault);
-                    _gpshadow.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _pshadow, StringFormat.GenericDefault);
+                    if (Var.DialogToDraw != null)
+                        _gp.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _p, StringFormat.GenericDefault);
+                    if (Var.DialogToDraw != null)
+                        _gpshadow.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _pshadow, StringFormat.GenericDefault);
                     e.Graphics.FillPath(Brushes.Black, _gpshadow);
                     e.Graphics.DrawPath(new Pen(Color.White, 2), _gp);
                     e.Graphics.FillPath(Brushes.Black, _gp);
@@ -313,7 +315,12 @@ namespace DesktopFidget
             IntPtr _window = NativeMethods.FindWindowByCaption(IntPtr.Zero, Var.WINDOW_NAME);
             Random _rnd = new Random();
             if (Var.AllowDialogs)
+            {
+                if (Var.DialogToDraw != null)
+                    Dialogs.refreshForm(0);
+
                 Dialogs.setDialog(_rnd.Next(16) + 101, 0);
+            }
 
             while(Var.LeftMouseButtonDown)
             {
@@ -336,7 +343,6 @@ namespace DesktopFidget
             if (Var.AllowDialogs)
             {
                 Dialogs.refreshForm(0);
-                Dialogs.clearDialog();
             }
         }
 
