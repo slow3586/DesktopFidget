@@ -42,8 +42,9 @@ namespace DesktopFidget
                 }
             }
             while (_window != IntPtr.Zero);
-                Var.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
-                this.Text = Var.WINDOW_NAME;
+
+            Var.WINDOW_NAME = "Desktop Fidget" + " Copy " + Convert.ToString(_c);
+            this.Text = Var.WINDOW_NAME;
             this.DoubleBuffered = true;
 
             //Cut frames
@@ -316,7 +317,7 @@ namespace DesktopFidget
 
             while(Var.LeftMouseButtonDown)
             {
-                Thread.Sleep(40);
+                Thread.Sleep(20);
                 int _newx = Cursor.Position.X;
                 int _newy = Cursor.Position.Y;
                 NativeMethods.SetWindowPos(_window, 0, _newx-_xdif, _newy-_ydif, Var.WindowSizeX, Var.WindowSizeY, 0x0040);

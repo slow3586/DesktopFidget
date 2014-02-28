@@ -24,7 +24,7 @@ namespace DesktopFidget
             string key,string val,string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section,
-                 string key,string def, StringBuilder retVal,
+            string key,string def, StringBuilder retVal,
             int size,string filePath);
 
        public IniFile(string INIPath) 
