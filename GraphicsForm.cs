@@ -145,14 +145,22 @@ namespace DesktopFidget
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            int ZBonus_WidthBonus = Var.ZBonus - Var.WidthBonus;
+            int ZBonus_HeightBonus = Var.ZBonus + Var.HeightBonus;
+            int WingSideSwitchBonus_Over2 = Var.WingSideSwitchBonus / 2;
+            int ZBonus_HeightBonus_Over2 = ZBonus_HeightBonus / 2;
+            int ZBonus_HeightBonus_Minus_WingSideSwitchBonus_Over2 = ZBonus_HeightBonus - WingSideSwitchBonus_Over2;
+            int WidthBonus_Minus_WingSideSwitchBonus = Var.WidthBonus - Var.WingSideSwitchBonus;
+            int WidthBonus_Minus_WingSideSwitchBonus_Over2 = Var.WidthBonus + WingSideSwitchBonus_Over2;
             if (!Var.LookingRightWay)
             {
-                e.Graphics.TranslateTransform(220 * Var.SizeLevel / 4, 0);
-                e.Graphics.ScaleTransform(-1 * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+
+                e.Graphics.TranslateTransform(220 * Var.SizeLevel, 0);
+                e.Graphics.ScaleTransform(-1 * Var.SizeLevel,Var.SizeLevel);
             }
             else
             {
-                e.Graphics.ScaleTransform(1F * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+                e.Graphics.ScaleTransform(Var.SizeLevel, Var.SizeLevel);
             }
 
             //SHADOWS
@@ -169,44 +177,44 @@ namespace DesktopFidget
                 if (Var.TailImage != null)
                 {
                     Point[] _destinationPoints = {
-                    new Point(79 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
-                    new Point(143 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
-                    new Point(63 - Var.ZBonus + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 138 + Var.HeightBonus + Var.ZBonus / 2)};
+                    new Point(79 - ZBonus_WidthBonus - WingSideSwitchBonus_Over2, 77 + ZBonus_HeightBonus_Over2),   // destination for upper-left point 
+                    new Point(143 - ZBonus_WidthBonus - WingSideSwitchBonus_Over2, 77 + ZBonus_HeightBonus_Over2),  // destination for upper-right point
+                    new Point(63 - ZBonus_WidthBonus - WingSideSwitchBonus_Over2, 138 + ZBonus_HeightBonus_Over2)};
                     e.Graphics.DrawImage(Var.TailImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
                 }
 
                 if (Var.RightWingImage != null)
                 {
                     Point[] _destinationPoints = {
-                    new Point(110 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
-                    new Point(174 - Var.ZBonus + Var.WidthBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
-                    new Point(110 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 145 + Var.HeightBonus + Var.ZBonus / 2)};
+                    new Point(110 - ZBonus_WidthBonus - Var.WingSideSwitchBonus, 17 + ZBonus_HeightBonus_Over2),   // destination for upper-left point 
+                    new Point(174 - ZBonus_WidthBonus, 17 + ZBonus_HeightBonus_Over2),  // destination for upper-right point
+                    new Point(110 - ZBonus_WidthBonus - Var.WingSideSwitchBonus, 145 + ZBonus_HeightBonus_Over2)};
                     e.Graphics.DrawImage(Var.RightWingImage, _destinationPoints, _rect128, GraphicsUnit.Pixel, ia);
                 }
                 if (Var.LowerBodyImage != null)
                 {
                     Point[] _destinationPoints = {
-                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus, Var.LOWER_BODY_Y + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
-                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus + 64, Var.LOWER_BODY_Y + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
-                    new Point(Var.LOWER_BODY_X - Var.ZBonus + Var.WidthBonus, Var.LOWER_BODY_Y + Var.HeightBonus + 64 + Var.ZBonus / 2)};
+                    new Point(Var.LOWER_BODY_X - ZBonus_WidthBonus, Var.LOWER_BODY_Y + ZBonus_HeightBonus_Over2),   // destination for upper-left point 
+                    new Point(Var.LOWER_BODY_X - ZBonus_WidthBonus + 64, Var.LOWER_BODY_Y + ZBonus_HeightBonus_Over2),  // destination for upper-right point
+                    new Point(Var.LOWER_BODY_X - ZBonus_WidthBonus, Var.LOWER_BODY_Y + Var.HeightBonus + 64 + Var.ZBonus / 2)};
                     e.Graphics.DrawImage(Var.LowerBodyImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
                 }
 
                 if (Var.LeftWingImage != null)
                 {
                     Point[] _destinationPoints = {
-                    new Point(55 - Var.ZBonus + Var.WidthBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
-                    new Point(119 - Var.ZBonus + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
-                    new Point(55 - Var.ZBonus + Var.WidthBonus, 145 + Var.HeightBonus + Var.ZBonus / 2)};
+                    new Point(55 - ZBonus_WidthBonus, 17 + ZBonus_HeightBonus_Over2),   // destination for upper-left point 
+                    new Point(119 - ZBonus_WidthBonus - Var.WingSideSwitchBonus, 17 + ZBonus_HeightBonus_Over2),  // destination for upper-right point
+                    new Point(55 - ZBonus_WidthBonus, 145 + ZBonus_HeightBonus_Over2)};
                     e.Graphics.DrawImage(Var.LeftWingImage, _destinationPoints, _rect128, GraphicsUnit.Pixel, ia);
                 }
 
                 if (Var.UpperBodyImage != null)
                 {
                     Point[] _destinationPoints = {
-                    new Point(75 - Var.ZBonus + Var.WidthBonus, 25 + Var.HeightBonus + Var.ZBonus / 2),   // destination for upper-left point 
-                    new Point(75 - Var.ZBonus + Var.WidthBonus + 64, 25 + Var.HeightBonus + Var.ZBonus / 2),  // destination for upper-right point
-                    new Point(75 - Var.ZBonus + Var.WidthBonus, 25 + Var.HeightBonus + 64 + Var.ZBonus / 2)};
+                    new Point(75 - ZBonus_WidthBonus, 25 + ZBonus_HeightBonus_Over2),   // destination for upper-left point 
+                    new Point(75 - ZBonus_WidthBonus + 64, 25 + ZBonus_HeightBonus_Over2),  // destination for upper-right point
+                    new Point(75 - ZBonus_WidthBonus, 25 + 64 + ZBonus_HeightBonus_Over2)};
                     e.Graphics.DrawImage(Var.UpperBodyImage, _destinationPoints, _rect64, GraphicsUnit.Pixel, ia);
                 }
             }
@@ -215,18 +223,18 @@ namespace DesktopFidget
                  if (Var.TailImage != null)
                  {
                      Point[] _destinationPoints = {
-                    new Point(79 + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus),   // destination for upper-left point 
-                    new Point(143 + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 77 + Var.HeightBonus),  // destination for upper-right point
-                    new Point(63 + Var.WidthBonus - (Var.WingSideSwitchBonus / 2), 138 + Var.HeightBonus)};
+                    new Point(79 + WidthBonus_Minus_WingSideSwitchBonus_Over2, 77 + Var.HeightBonus),   // destination for upper-left point 
+                    new Point(143 + WidthBonus_Minus_WingSideSwitchBonus_Over2, 77 + Var.HeightBonus),  // destination for upper-right point
+                    new Point(63 + WidthBonus_Minus_WingSideSwitchBonus_Over2, 138 + Var.HeightBonus)};
                     e.Graphics.DrawImage(Var.TailImage, _destinationPoints);
                  }
                 
                  if (Var.RightWingImage != null)
                  {
                      Point[] _destinationPoints = {
-                    new Point(110 + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus),   // destination for upper-left point 
+                    new Point(110 + WidthBonus_Minus_WingSideSwitchBonus, 17 + Var.HeightBonus),   // destination for upper-left point 
                     new Point(174 + Var.WidthBonus, 17 + Var.HeightBonus),  // destination for upper-right point
-                    new Point(110 + Var.WidthBonus - Var.WingSideSwitchBonus, 145 + Var.HeightBonus)};
+                    new Point(110 + WidthBonus_Minus_WingSideSwitchBonus, 145 + Var.HeightBonus)};
                     e.Graphics.DrawImage(Var.RightWingImage, _destinationPoints);
                  } 
                 if (Var.LowerBodyImage != null) 
@@ -236,7 +244,7 @@ namespace DesktopFidget
                 {
                     Point[] _destinationPoints = {
                     new Point(55 + Var.WidthBonus, 17 + Var.HeightBonus),   // destination for upper-left point 
-                    new Point(119 + Var.WidthBonus - Var.WingSideSwitchBonus, 17 + Var.HeightBonus),  // destination for upper-right point
+                    new Point(119 + WidthBonus_Minus_WingSideSwitchBonus, 17 + Var.HeightBonus),  // destination for upper-right point
                     new Point(55 + Var.WidthBonus, 145 + Var.HeightBonus)};
                     e.Graphics.DrawImage(Var.LeftWingImage, _destinationPoints);
                 } 
@@ -251,37 +259,36 @@ namespace DesktopFidget
                    if (!Var.LookingRightWay)
                    {
                        e.Graphics.TranslateTransform(220 * Var.SizeLevel / 4, 0);
-                       e.Graphics.ScaleTransform(-1 * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+                       e.Graphics.ScaleTransform(-1 * Var.SizeLevel, Var.SizeLevel);
                        _tempWidthBonus = -_tempWidthBonus;
                    }
                    else
                    {
-                       e.Graphics.ScaleTransform(1F * 0.25F * Convert.ToSingle(Var.SizeLevel), 1 * 0.25F * Convert.ToSingle(Var.SizeLevel));
+                       e.Graphics.ScaleTransform(Var.SizeLevel, Var.SizeLevel);
                    }
 
-                    Rectangle _rect = new Rectangle
-                    (Var.LOWER_BODY_X + 75 + _tempWidthBonus, Var.LOWER_BODY_Y - 33 + Var.HeightBonus
-                    ,20 + Convert.ToInt16(9.5*Var.DialogToDraw.Length),Var.LOWER_BODY_Y - 43);
-                    Rectangle _rectpie = new Rectangle
-                    (Var.LOWER_BODY_X + 25 + _tempWidthBonus, Var.LOWER_BODY_Y - 40 + Var.HeightBonus
-                    , Var.LOWER_BODY_X + 21, Var.LOWER_BODY_Y - 36);
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 2), _rect);
-                    e.Graphics.DrawPie(new Pen(Color.Black, 2), _rectpie, 90.0F, 45.0F);
-                    e.Graphics.FillRectangle(Brushes.White, _rect);
-                    e.Graphics.FillPie(Brushes.White, _rectpie, 90.0F, 45.0F);
+                                         Rectangle _rect = new Rectangle
+                       (Var.LOWER_BODY_X + 75 + _tempWidthBonus, Var.LOWER_BODY_Y - 33 + Var.HeightBonus
+                       , 20 + Convert.ToInt16(9.5 * Var.DialogToDraw.Length), Var.LOWER_BODY_Y - 43);
+                       Rectangle _rectpie = new Rectangle
+                       (Var.LOWER_BODY_X + 25 + _tempWidthBonus, Var.LOWER_BODY_Y - 40 + Var.HeightBonus
+                       , Var.LOWER_BODY_X + 21, Var.LOWER_BODY_Y - 36);
+                       e.Graphics.DrawRectangle(new Pen(Color.Black, 2), _rect);
+                       e.Graphics.DrawPie(new Pen(Color.Black, 2), _rectpie, 90.0F, 45.0F);
+                       e.Graphics.FillRectangle(Brushes.White, _rect);
+                       e.Graphics.FillPie(Brushes.White, _rectpie, 90.0F, 45.0F);
 
-
-                    GraphicsPath _gp = new GraphicsPath();
-                    GraphicsPath _gpshadow = new GraphicsPath();
-                    PointF _p = new PointF(Var.LOWER_BODY_X + 85 + _tempWidthBonus, Var.LOWER_BODY_Y - 31 + Var.HeightBonus);
-                    PointF _pshadow = new PointF(Var.LOWER_BODY_X + 84 + _tempWidthBonus, Var.LOWER_BODY_Y - 30 + Var.HeightBonus);
-                    if (Var.DialogToDraw != null)
-                        _gp.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _p, StringFormat.GenericDefault);
-                    if (Var.DialogToDraw != null)
-                        _gpshadow.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _pshadow, StringFormat.GenericDefault);
-                    e.Graphics.FillPath(Brushes.Black, _gpshadow);
-                    e.Graphics.DrawPath(new Pen(Color.White, 2), _gp);
-                    e.Graphics.FillPath(Brushes.Black, _gp);
+                        GraphicsPath _gp = new GraphicsPath();
+                        GraphicsPath _gpshadow = new GraphicsPath();
+                        PointF _p = new PointF(Var.LOWER_BODY_X + 85 + _tempWidthBonus, Var.LOWER_BODY_Y - 31 + Var.HeightBonus);
+                        PointF _pshadow = new PointF(Var.LOWER_BODY_X + 84 + _tempWidthBonus, Var.LOWER_BODY_Y - 30 + Var.HeightBonus);
+                        if (Var.DialogToDraw != null)
+                            _gp.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _p, StringFormat.GenericDefault);
+                        if (Var.DialogToDraw != null)
+                            _gpshadow.AddString(Var.DialogToDraw, new FontFamily("Courier New"), (int)FontStyle.Bold, 15, _pshadow, StringFormat.GenericDefault);
+                        e.Graphics.FillPath(Brushes.Black, _gpshadow);
+                        e.Graphics.DrawPath(new Pen(Color.White, 2), _gp);
+                        e.Graphics.FillPath(Brushes.Black, _gp);
                }
         }
 
@@ -360,31 +367,37 @@ namespace DesktopFidget
 
         private void OpenForm2()
         {
-            FormCollection fc = Application.OpenForms;
-            int _a=0;
-            foreach (Form frm in fc)
-            {
-                if (frm.Text == "DFidget Settings")
-                {
-                    _a++;
-                }
-            }
-            if(_a==0)
-                Application.Run(new SettingsForm());
+            Application.Run(new SettingsForm());
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Thread threadform2 = new Thread(new ThreadStart(OpenForm2));
-            threadform2.Name = "Settings Menu Form";
-            threadform2.IsBackground = true;
-            threadform2.Start();
+            if (!Var.SettingsMenuIsOpen)
+            {
+                Thread threadform2 = new Thread(new ThreadStart(OpenForm2));
+                threadform2.Name = "Settings Menu Form";
+                threadform2.IsBackground = true;
+                threadform2.Start();
+                Var.SettingsMenuIsOpen = true;
+            }
+            else
+            {
+                MessageBox.Show("Settings menu is already open!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             notifyIcon1.Visible = false;
             Application.Exit();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (this.CanFocus)
+            {
+                this.Focus();
+            }
         }
     }
 }

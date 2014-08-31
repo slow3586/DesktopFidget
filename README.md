@@ -21,8 +21,19 @@ Click right mouse button: Switch side
 ####Dialogs:
 Dialogs can be extracted by clicking the "Ext Dialogs" buttons in the settings menu. They will be saved in a "fdialogs.txt" file. You can edit them and add your own up to 200 max.
 If there's a dialogs file it will be loaded and will overwrite the existing ones. Note that dialogs from line 101 to 116 are used for mouse clicks.
+PS: I wrote them myself and I think they're silly. Use at your own risk.
 
 ##Changelog:
+#####2.2.3.2
+Reduced amount of calculations during the draw loop;
+
+Opening the settings menu while it's already active will pop an alert;
+
+Double clicking the notify icon puts the application on top;
+
+#####2.2.2.2 quickfix
+Fixed crashes related to dialogs;
+
 #####2.2.1.2
 Dialogs implemented;
 

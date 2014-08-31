@@ -84,7 +84,7 @@ namespace DesktopFidget
         public static int ZBonusIncreaseMultiplier = 1000;
         public static int FlightSpeedMultiplier = 500;
 
-        public static int ProgramVersion = 2222;
+        public static int ProgramVersion = 2232;
         public static string WINDOW_NAME = "Desktop Fidget";
         public static bool ClickThroughWindow = false;
         public static bool FollowTheMouse = false;
@@ -94,10 +94,11 @@ namespace DesktopFidget
         public static int SecondsToNextMovement = 0;
         public static int AnimationsFrequency = 100;
         public static int AlphaLevel = 100;
-        public static int SizeLevel = 4;
+        public static float SizeLevel = 1;
         public static int SecondsSpentBeforeNextMovement = 0;
         public static bool IniFileWasLoaded = false;
         public static bool Shadow = false;
+        public static bool SettingsMenuIsOpen = false;
 
         public static String[] Dialogs = new String[200];
         public static String DialogToDraw;

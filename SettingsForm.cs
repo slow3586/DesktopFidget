@@ -22,7 +22,7 @@ namespace DesktopFidget
             ModsLabel.Text = Var.Mods;
             MovingDistanceTB.Value = Var.MovementDistance;
             MovingFrequencyTB.Value = Var.MovementFrequency;
-            SizeLevelTB.Value = Var.SizeLevel;
+            SizeLevelTB.Value = Convert.ToInt32(Var.SizeLevel*4);
             if (Var.AnimationsFrequency > 255)
                 AnimationsFrequencyTB.Value = 255;
             else
@@ -94,8 +94,8 @@ namespace DesktopFidget
 
         private void SizeLevelTB_ValueChanged(object sender, EventArgs e)
         {
-            SizeLevelLabel.Text = Convert.ToString(SizeLevelTB.Value*25) + '%';
-            Var.SizeLevel = SizeLevelTB.Value;
+            SizeLevelLabel.Text = Convert.ToString(SizeLevelTB.Value * 25) + '%';
+            Var.SizeLevel = Convert.ToSingle(SizeLevelTB.Value) / 4;
         }
 
         private void FollowTheMouseCB_CheckedChanged(object sender, EventArgs e)
@@ -153,6 +153,11 @@ namespace DesktopFidget
             }
             Random _rnd = new Random();
             Var.SecondsBeforeNextDialog = _rnd.Next(60 * Var.DialogsFrequency/100, 75 * Var.DialogsFrequency/100);
+        }
+
+        private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Var.SettingsMenuIsOpen = false;
         }
     }
 }
